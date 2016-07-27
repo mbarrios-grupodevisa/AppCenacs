@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/element_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView android:id="@+id/element_revision"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:ems="10"
+            android:textAlignment="center"
+            android:text="@string/modelo"
+            android:layout_weight="6"/>
+
+        <Button
+            android:id="@+id/element_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:textAlignment="center"
+            android:text="@string/agregar_comentario"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
