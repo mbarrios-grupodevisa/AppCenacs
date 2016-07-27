@@ -36,7 +36,7 @@ public class NuevoItemRevisionDialog extends DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if(!revision.getText().toString().equals(""))
+                        if(true)
                         {
                             //Subir Datos
                             String proyecto = lista_proyectos.getSelectedItem().toString();
