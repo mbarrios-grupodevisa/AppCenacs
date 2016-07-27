@@ -56,7 +56,7 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {
         try {
             String proyecto = params[0];
-            String link = "http://atreveteacrecer.metrocasas.com.gt/getProjectElements.php";
+            String link = "http://atreveteacrecer.metrocasas.com.gt/getProjectElements2.php";
             String data = URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8");
 
             URL url = new URL(link);

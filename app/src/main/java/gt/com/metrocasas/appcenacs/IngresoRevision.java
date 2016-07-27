@@ -47,7 +47,7 @@ public class IngresoRevision extends AsyncTask<String, Integer, String> {
             String fechaRevision = params[2];
             String json = params[3];
 
-            String link = "http://atreveteacrecer.metrocasas.com.gt/insertRevision.php";
+            String link = "http://atreveteacrecer.metrocasas.com.gt/insertRevision2.php";
             String data = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(user, "UTF-8")
                     + "&" + URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8")
                     + "&" + URLEncoder.encode("fechaRevision", "UTF-8") + "=" + URLEncoder.encode(fechaRevision, "UTF-8");
