@@ -4,18 +4,23 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class NuevoItemRevisionDialog extends DialogFragment{
+import com.google.android.gms.location.LocationListener;
 
-    private Spinner lista_proyectos;
-    private Spinner lista_clasificacion;
-    private EditText revision;
+public class NuevoItemRevisionDialog extends DialogFragment implements LocationListener {
+
+    private TextView nombre_proyecto;
+    private Spinner lista_estado;
+    private LocationManager locationManager;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -23,32 +28,20 @@ public class NuevoItemRevisionDialog extends DialogFragment{
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v = inflater.inflate(R.layout.dialog_ingresar_item_revision, null);
-        lista_proyectos = (Spinner) v.findViewById(R.id.proyecto);
-        lista_clasificacion = (Spinner) v.findViewById(R.id.clasificacion);
-        revision = (EditText) v.findViewById(R.id.editText_revision);
+        nombre_proyecto = (TextView) v.findViewById(R.id.proyecto);
+        lista_estado = (Spinner) v.findViewById(R.id.clasificacion);
         String proyecto = getArguments().getString("proyecto");
-        assert proyecto != null;
-        if(proyecto.equals("Viventi")) lista_proyectos.setSelection(0);
-        if(proyecto.equals("Casa Asunción")) lista_proyectos.setSelection(1);
+        nombre_proyecto.setText(proyecto);
+
         builder.setView(v)
                 // Add action buttons
                 .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
-                        if(!revision.getText().toString().equals(""))
-                        {
                             //Subir Datos
-                            String proyecto = lista_proyectos.getSelectedItem().toString();
-                            String clasificación = lista_clasificacion.getSelectedItem().toString();
-                            String rev = revision.getText().toString();
-                            new IngresoElemento(getActivity()).execute(proyecto,clasificación,rev);
-                        }
-                        else
-                        {
-                            Toast.makeText(v.getContext(),"Hay campos vacios",Toast.LENGTH_LONG).show();
-                            NuevoItemRevisionDialog.this.getDialog().dismiss();
-                        }
+                            String proyecto = nombre_proyecto.getText().toString();
+                            String clasificación = lista_estado.getSelectedItem().toString();
+                            //new IngresoElemento(getActivity()).execute(proyecto,clasificación,rev);
                     }
                 })
                 .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
@@ -61,4 +54,8 @@ public class NuevoItemRevisionDialog extends DialogFragment{
 
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
 }

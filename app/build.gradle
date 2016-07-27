@@ -31,4 +31,5 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-core:2.2.20'
     compile 'com.amazonaws:aws-android-sdk-s3:2.2.20'
     compile 'org.projectlombok:lombok:1.12.6'
+    compile 'com.google.android.gms:play-services:9.0.2'
 }

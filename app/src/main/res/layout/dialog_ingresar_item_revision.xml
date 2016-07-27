@@ -39,34 +39,28 @@
                 android:orientation="vertical"
                 android:id="@+id/l1">
 
-                <Spinner
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/proyecto"
-                    android:entries="@array/lista_proyectos"/>
+                    android:text="Proyecto"
+                    android:gravity="center"
+                    android:id="@+id/proyecto"/>
 
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/clasificacion"
-                    android:entries="@array/lista_clasificacion"/>
+                    android:entries="@array/lista_estado"/>
 
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInput_item_revision"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/l1">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/revision"
-                    android:ems="10"
-                    android:id="@+id/editText_revision"
-                    android:layout_alignParentStart="true" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="50dp"
+                android:text="Hora"
+                android:gravity="center"
+                android:layout_below="@+id/l1"/>
+
 
         </RelativeLayout>
 
