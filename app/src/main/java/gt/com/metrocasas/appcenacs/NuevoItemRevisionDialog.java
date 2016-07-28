@@ -42,8 +42,8 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         hora = (TextView) v.findViewById(R.id.hora);
         lista_estado = (Spinner) v.findViewById(R.id.clasificacion);
         String proyecto = getArguments().getString("proyecto");
-        double lat = getArguments().getDouble("latitud");
-        double lng = getArguments().getDouble("longitud");
+        final double lat = getArguments().getDouble("latitud");
+        final double lng = getArguments().getDouble("longitud");
         nombre_proyecto.setText(proyecto);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
@@ -57,6 +57,8 @@ public class NuevoItemRevisionDialog extends DialogFragment {
                             //Subir Datos
                             String proyecto = nombre_proyecto.getText().toString();
                             String clasificación = lista_estado.getSelectedItem().toString();
+                            String  a = lat+"";
+                            String  b = lng+"";
                             //new IngresoElemento(getActivity()).execute(proyecto,clasificación,rev);
                     }
                 })
