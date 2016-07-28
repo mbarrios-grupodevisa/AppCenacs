@@ -283,7 +283,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             for (File i : files) {
                 AmazonS3 s3Client = new AmazonS3Client(amazonCognito());
                 TransferUtility transferUtility = new TransferUtility(s3Client, this);
-                TransferObserver transferObserver = transferUtility.upload(BUCKET_NAME, "revisionesmerca/" + i.getName(), i);
+                TransferObserver transferObserver = transferUtility.upload(BUCKET_NAME, "revisionescenac/" + i.getName(), i);
                 transferObserver.setTransferListener(new TransferListener() {
                     @Override
                     public void onStateChanged(int id, TransferState state) {
