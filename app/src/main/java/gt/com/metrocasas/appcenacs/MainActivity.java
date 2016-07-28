@@ -2,34 +2,54 @@ package gt.com.metrocasas.appcenacs;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+
+
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LocationListener
+{
 
     private GoogleApiClient client;
     private Toolbar toolbar;
     public String userid, proyecto;
+    private LocationManager locationManager;
+    double longitudeNetwork, latitudeNetwork;
+    private String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Viventi");
         proyecto = "Viventi";
@@ -44,6 +64,22 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         setFragment(1);
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60 * 1000, 10, locationListenerNetwork);
     }
 
     @Override
@@ -88,6 +124,8 @@ public class MainActivity extends AppCompatActivity
             NuevoItemRevisionDialog nird = new NuevoItemRevisionDialog();
             Bundle bundle = new Bundle();
             bundle.putString("proyecto", proyecto);
+            bundle.putDouble("latitud",latitudeNetwork);
+            bundle.putDouble("longitud",longitudeNetwork);
             nird.setArguments(bundle);
             nird.show(this.getFragmentManager(),"");
             return true;
@@ -198,4 +236,66 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle("Casa Asunción");
         }
     }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //int lat = (int) (location.getLatitude());
+        ///int lng = (int) (location.getLongitude());
+        //Log.i("COORDENADAS:",""+lat+"-"+lng);
+        //String msg = "New Latitude: " + location.getLatitude()
+        //        + "New Longitude: " + location.getLongitude();
+        //Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+        //Toast.makeText(getBaseContext(), "Gps is turned on!! ",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        //Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        //startActivity(intent);
+        //Toast.makeText(getBaseContext(), "Gps is turned off!! ",Toast.LENGTH_SHORT).show();
+    }
+
+    private final LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(final Location location) {
+            longitudeNetwork = location.getLongitude();
+            latitudeNetwork = location.getLatitude();
+            Toast.makeText(MainActivity.this, "Network: "+longitudeNetwork+"-"+latitudeNetwork, Toast.LENGTH_SHORT).show();
+            Log.i("Coordedas", "Network: "+latitudeNetwork+","+longitudeNetwork);
+
+            /*runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //longitudeValueNetwork.setText(longitudeNetwork + "");
+                    //latitudeValueNetwork.setText(latitudeNetwork + "");
+                    Toast.makeText(MainActivity.this, "Network: "+longitudeNetwork+"-"+latitudeNetwork, Toast.LENGTH_SHORT).show();
+                }
+            });*/
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+
 }

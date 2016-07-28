@@ -1,12 +1,20 @@
 package gt.com.metrocasas.appcenacs;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,12 +24,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 
-public class NuevoItemRevisionDialog extends DialogFragment implements LocationListener {
+public class NuevoItemRevisionDialog extends DialogFragment {
 
     private TextView nombre_proyecto;
+    private TextView hora;
     private Spinner lista_estado;
-    private LocationManager locationManager;
 
+
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -29,9 +39,15 @@ public class NuevoItemRevisionDialog extends DialogFragment implements LocationL
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v = inflater.inflate(R.layout.dialog_ingresar_item_revision, null);
         nombre_proyecto = (TextView) v.findViewById(R.id.proyecto);
+        hora = (TextView) v.findViewById(R.id.hora);
         lista_estado = (Spinner) v.findViewById(R.id.clasificacion);
         String proyecto = getArguments().getString("proyecto");
+        double lat = getArguments().getDouble("latitud");
+        double lng = getArguments().getDouble("longitud");
         nombre_proyecto.setText(proyecto);
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        hora.setText(today.format("%k:%M:%S"));
 
         builder.setView(v)
                 // Add action buttons
@@ -54,8 +70,4 @@ public class NuevoItemRevisionDialog extends DialogFragment implements LocationL
 
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
 }

@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Proyecto"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:id="@+id/proyecto"/>
 
                 <Spinner
@@ -57,8 +57,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:id="@+id/hora"
                 android:text="Hora"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:layout_below="@+id/l1"/>
 
 
