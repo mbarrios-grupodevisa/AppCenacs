@@ -102,21 +102,9 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
                 for(int i = 0; i < jsonArray.length(); i++)
                 {
                     JSONObject objecto = jsonArray.getJSONObject(i);
-                    if(objecto.getString("clasificacion").equals("Interno")) {
+                    if(objecto.getString("clasificacion").equals("General")) {
                         Elemento item = new Elemento(objecto.getString("id"), objecto.getString("proyecto"), objecto.getString("clasificacion"), objecto.getString("elemento"));
                         listInternos.add(item);
-                    } else if(objecto.getString("clasificacion").equals("Externo")) {
-                        Elemento item = new Elemento(objecto.getString("id"), objecto.getString("proyecto"), objecto.getString("clasificacion"), objecto.getString("elemento"));
-                        listExternos.add(item);
-                    } else if(objecto.getString("clasificacion").equals("Despensa")) {
-                        Elemento item = new Elemento(objecto.getString("id"), objecto.getString("proyecto"), objecto.getString("clasificacion"), objecto.getString("elemento"));
-                        listDespensa.add(item);
-                    } else if(objecto.getString("clasificacion").equals("Limpieza")) {
-                        Elemento item = new Elemento(objecto.getString("id"), objecto.getString("proyecto"), objecto.getString("clasificacion"), objecto.getString("elemento"));
-                        listLimpieza.add(item);
-                    } else if(objecto.getString("clasificacion").equals("Construcción")) {
-                        Elemento item = new Elemento(objecto.getString("id"), objecto.getString("proyecto"), objecto.getString("clasificacion"), objecto.getString("elemento"));
-                        listConstruccion.add(item);
                     }
                 }
             }

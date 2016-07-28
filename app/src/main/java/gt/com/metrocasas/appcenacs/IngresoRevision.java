@@ -69,7 +69,7 @@ public class IngresoRevision extends AsyncTask<String, Integer, String> {
             JSONArray jsonArray = jsonObject.getJSONArray("revisiones");
             revisionid  = jsonArray.getJSONObject(0).getString("id");
 
-                link = "http://atreveteacrecer.metrocasas.com.gt/insertDetalleRevision.php";
+                link = "http://atreveteacrecer.metrocasas.com.gt/insertDetalleRevision2.php";
                 data = URLEncoder.encode("revision_id", "UTF-8") + "=" + URLEncoder.encode(revisionid, "UTF-8")
                         + "&" + URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
 

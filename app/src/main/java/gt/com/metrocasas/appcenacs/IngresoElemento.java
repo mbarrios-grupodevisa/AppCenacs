@@ -24,20 +24,20 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {
         try
         {
-            String userid = "1";
-            String registro = "ENTRADA";
-            String proyecto = "VIVENTI";
-            String latitud = "14.00";
-            String longitud = "-90.00";
-            String fechaRegistro = "03:13 PM";
+            String userid = params[0];
+            String registro = params[1];
+            String proyecto = params[2];
+            String latitud = params[3];
+            String longitud = params[4];
+            String fechaRegistro = params[5];
 
             String link = "http://atreveteacrecer.metrocasas.com.gt/insertRegistro.php";
-            String data = URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8")
-                    + "&" + URLEncoder.encode("clasificacion", "UTF-8") + "=" + URLEncoder.encode(registro, "UTF-8")
-                    + "&" + URLEncoder.encode("clasificacion", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8")
-                    + "&" + URLEncoder.encode("clasificacion", "UTF-8") + "=" + URLEncoder.encode(latitud, "UTF-8")
-                    + "&" + URLEncoder.encode("clasificacion", "UTF-8") + "=" + URLEncoder.encode(longitud, "UTF-8")
-                    + "&" + URLEncoder.encode("elemento", "UTF-8") + "=" + URLEncoder.encode(fechaRegistro, "UTF-8");
+            String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8")
+                    + "&" + URLEncoder.encode("registro", "UTF-8") + "=" + URLEncoder.encode(registro, "UTF-8")
+                    + "&" + URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8")
+                    + "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode(latitud, "UTF-8")
+                    + "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(longitud, "UTF-8")
+                    + "&" + URLEncoder.encode("fechaRegistro", "UTF-8") + "=" + URLEncoder.encode(fechaRegistro, "UTF-8");
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
