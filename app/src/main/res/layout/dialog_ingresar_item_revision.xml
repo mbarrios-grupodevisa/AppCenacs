@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Proyecto"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_marginLeft="12dp"
                     android:gravity="center_vertical"
                     android:id="@+id/proyecto"/>
 
@@ -51,7 +51,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/clasificacion"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:entries="@array/lista_estado"/>
 
             </LinearLayout>
@@ -61,7 +60,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/hora"
                 android:text="Hora"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginLeft="12dp"
                 android:gravity="center_vertical"
                 android:layout_below="@+id/l1"/>
 

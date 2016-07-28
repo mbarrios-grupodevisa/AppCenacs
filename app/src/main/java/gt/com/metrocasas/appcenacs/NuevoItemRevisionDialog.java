@@ -48,7 +48,7 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         nombre_proyecto.setText("Proyecto: "+proyecto);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-        hora.setText("Fecha y enriqueHora: " + today.format("%C %B %l:%M%p"));
+        hora.setText("Fecha y Hora: " + today.format("%C %B %l:%M %p"));
 
         builder.setView(v)
                 // Add action buttons
