@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="@string/nuevoelementorevision"
+            android:text="Registro de Ingreso/Salida"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/title_dialog"
             android:background="@color/colorAccent"
@@ -43,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Proyecto"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:gravity="center_vertical"
                     android:id="@+id/proyecto"/>
 
@@ -50,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/clasificacion"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:entries="@array/lista_estado"/>
 
             </LinearLayout>
@@ -59,6 +61,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/hora"
                 android:text="Hora"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:gravity="center_vertical"
                 android:layout_below="@+id/l1"/>
 

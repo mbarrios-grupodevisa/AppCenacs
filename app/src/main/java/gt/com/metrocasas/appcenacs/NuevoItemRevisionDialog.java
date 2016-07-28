@@ -45,10 +45,10 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         final double lat = getArguments().getDouble("latitud");
         final double lng = getArguments().getDouble("longitud");
         final String userid = getArguments().getString("id");
-        nombre_proyecto.setText(proyecto);
+        nombre_proyecto.setText("Proyecto: "+proyecto);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-        hora.setText(today.format("%k:%M:%S"));
+        hora.setText("Fecha y enriqueHora: " + today.format("%C %B %l:%M%p"));
 
         builder.setView(v)
                 // Add action buttons
