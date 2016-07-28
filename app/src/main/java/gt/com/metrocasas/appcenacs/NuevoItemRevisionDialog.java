@@ -4,25 +4,14 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.location.LocationListener;
 
 public class NuevoItemRevisionDialog extends DialogFragment {
 
@@ -45,7 +34,7 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         final double lat = getArguments().getDouble("latitud");
         final double lng = getArguments().getDouble("longitud");
         final String userid = getArguments().getString("id");
-        nombre_proyecto.setText("Proyecto: "+proyecto);
+        nombre_proyecto.setText("Proyecto: " + proyecto);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         hora.setText("Fecha y Hora: " + today.format("%C %B %l:%M %p"));

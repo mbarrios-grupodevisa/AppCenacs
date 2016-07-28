@@ -1,15 +1,10 @@
 package gt.com.metrocasas.appcenacs;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,10 +60,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     private static final int VIVENTI = 3;
     private static final int CASA_ASUNCION = 4;
     public final static String BUCKET_NAME = "projectsgtimages";
-    public static final int NOTIFICATION_ID = 1;
-
-    NotificationCompat.Builder builder;
-    NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +90,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
                 subirInformacion();
             }
         });
-
-        builder = new NotificationCompat.Builder(this);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         //<editor-fold desc="Ocultar CardViews">
         final TextView titulo_ci = (TextView) findViewById(R.id.text_view_title_cenac_interno);
@@ -236,42 +224,15 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     }
 
     public CognitoCachingCredentialsProvider amazonCognito() {
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+        return new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
                 "us-east-1:66fdcec3-f2c0-4015-80ef-f9efcad31fb3", // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
-        return credentialsProvider;
-    }
-
-    public void showNotification() {
-        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, DetalleRevisionActivity.class), 0);
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("Título")
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Subtitulo")
-                .setContentText("Este es el texto")
-                .setContentIntent(pi)
-                .setAutoCancel(true)
-                .build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
-    }
-
-    public void sendNotification(View view) {
-
-        builder.setSmallIcon(android.R.drawable.btn_default_small);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
-        builder.setContentTitle("Revisiones");
-        builder.setContentText("Se completó la carga de archivos");
-        builder.setProgress(100, 0, true);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     private boolean bandera = true;
     public void upLoadPictures() {
-        sendNotification(v);
         bandera = true;
         List<Elemento> elements = getListElements();
         ArrayList<File> files = new ArrayList<>();
@@ -298,8 +259,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
                     @Override
                     public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                        builder.setProgress((int)bytesTotal, (int)bytesCurrent, true);
-                        notificationManager.notify(NOTIFICATION_ID, builder.build());
+                        progreso.setProgress((int)bytesCurrent);
                     }
 
                     @Override

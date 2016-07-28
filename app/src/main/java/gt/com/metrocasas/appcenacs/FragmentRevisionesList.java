@@ -68,7 +68,6 @@ public class FragmentRevisionesList extends Fragment {
         });
 
         rAdapter = new RevisionAdapter(listRevision);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(rAdapter);
