@@ -44,6 +44,7 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         String proyecto = getArguments().getString("proyecto");
         final double lat = getArguments().getDouble("latitud");
         final double lng = getArguments().getDouble("longitud");
+        final String userid = getArguments().getString("id");
         nombre_proyecto.setText(proyecto);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
@@ -56,10 +57,11 @@ public class NuevoItemRevisionDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                             //Subir Datos
                             String proyecto = nombre_proyecto.getText().toString();
-                            String clasificación = lista_estado.getSelectedItem().toString();
-                            String  a = lat+"";
-                            String  b = lng+"";
-                            //new IngresoElemento(getActivity()).execute(proyecto,clasificación,rev);
+                            String registro = lista_estado.getSelectedItem().toString();
+                            String  latitud = lat+"";
+                            String  longitud = lng+"";
+                            String fechaRegistro = hora.getText().toString();
+                            new IngresoElemento(getActivity()).execute(userid, registro, proyecto, latitud, longitud, fechaRegistro);
                     }
                 })
                 .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {

@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putString("proyecto", proyecto);
             bundle.putDouble("latitud",latitudeNetwork);
             bundle.putDouble("longitud",longitudeNetwork);
+            bundle.putString("id", userid);
             nird.setArguments(bundle);
             nird.show(this.getFragmentManager(),"");
             return true;
