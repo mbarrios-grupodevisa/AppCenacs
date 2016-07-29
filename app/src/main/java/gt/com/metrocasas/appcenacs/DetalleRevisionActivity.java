@@ -1,15 +1,10 @@
 package gt.com.metrocasas.appcenacs;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,8 +60,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     private static final int VIVENTI = 3;
     private static final int CASA_ASUNCION = 4;
     public final static String BUCKET_NAME = "projectsgtimages";
-    public static final int NOTIFICATION_ID = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,7 +224,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     }
 
     public CognitoCachingCredentialsProvider amazonCognito() {
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+        return new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
                 "us-east-1:66fdcec3-f2c0-4015-80ef-f9efcad31fb3", // Identity Pool ID
                 Regions.US_EAST_1 // Region
@@ -254,6 +247,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         notificationManager.notify(0, notification);
     }
 
+    }
 
     private boolean bandera = true;
     public void upLoadPictures() {
