@@ -1,5 +1,6 @@
 package gt.com.metrocasas.appcenacs;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -22,6 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -72,6 +76,13 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60 * 1000, 10, locationListenerNetwork);
+        hello();
+    }
+
+    private void hello() {
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+        String name = settings.getString("firstname",null);
+        Snackbar.make(toolbar,"Bienvenido(a) " + name, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -98,11 +109,6 @@ public class MainActivity extends AppCompatActivity
             bundle.putString("id", userid);
             nird.setArguments(bundle);
             nird.show(this.getFragmentManager(),"");
-
-            SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
-            String dato = settings.getString("id","No Funciona");
-            Log.i("Setting: ", dato);
-
             return true;
         }
 
@@ -181,10 +187,6 @@ public class MainActivity extends AppCompatActivity
                 Uri.parse("android-app://gt.com.metrocasas.appcenacs/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
-
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
-        String name = settings.getString("firstname",null);
-        Snackbar.make(toolbar,"Bienvenido(a) "+name,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -278,7 +280,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 }
