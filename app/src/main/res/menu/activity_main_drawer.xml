@@ -17,7 +17,7 @@
             <item
                 android:id="@+id/logout"
                 android:title="@string/logout"
-                android:icon="@android:drawable/ic_notification_clear_all"
+                android:icon="@drawable/cierre"
                 />
         </menu>
     </item>

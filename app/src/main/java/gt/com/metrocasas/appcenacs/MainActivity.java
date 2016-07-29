@@ -81,8 +81,9 @@ public class MainActivity extends AppCompatActivity
 
     private void hello() {
         SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
-        String name = settings.getString("firstname",null);
-        Snackbar.make(toolbar,"Bienvenido(a) " + name, Snackbar.LENGTH_LONG).show();
+        String name = settings.getString("firstname", null);
+        String last = settings.getString("lastname", null);
+        Snackbar.make(toolbar,"Bienvenido(a) " + name + " " + last, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -281,7 +282,5 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
     }
 }

@@ -20,7 +20,7 @@
             android:text="Registro de Ingreso/Salida"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/title_dialog"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:textColor="#FFFFFF"
             android:gravity="center_horizontal"/>
 

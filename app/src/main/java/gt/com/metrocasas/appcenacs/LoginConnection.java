@@ -93,11 +93,13 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
                 JSONObject objecto = jsonArray.getJSONObject(0);
                 String id = objecto.getString("id");
                 String name = objecto.getString("firstname");
+                String last = objecto.getString("lastname");
 
                 SharedPreferences settings = context.getSharedPreferences("User",0);
                 SharedPreferences.Editor editor = editor = settings.edit();
                 editor.putString("id",id);
                 editor.putString("firstname",name);
+                editor.putString("lastname", last);
                 editor.apply();
 
                 Intent i = new Intent(this.context, MainActivity.class);
