@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "680603616367",
+    "firebase_url": "https://realtimedatabase-b79bc.firebaseio.com",
+    "project_id": "realtimedatabase-b79bc",
+    "storage_bucket": "realtimedatabase-b79bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680603616367:android:0719aa23739c49d8",
+        "android_client_info": {
+          "package_name": "gt.com.metrocasas.realtimedatabase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680603616367-rq1k1kimdc4ili3j214cm7qftugk5pv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVSceUpcJn_-OSgKGEazgyHSiCRWx3JB0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680603616367:android:873c6dda5cfc7f5e",
+        "android_client_info": {
+          "package_name": "gt.com.metrocasas.appcenacs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680603616367-rq1k1kimdc4ili3j214cm7qftugk5pv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVSceUpcJn_-OSgKGEazgyHSiCRWx3JB0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
