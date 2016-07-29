@@ -2,8 +2,11 @@ package gt.com.metrocasas.appcenacs;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +92,14 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
             {
                 JSONObject objecto = jsonArray.getJSONObject(0);
                 String id = objecto.getString("id");
+                String name = objecto.getString("firstname");
+
+                SharedPreferences settings = context.getSharedPreferences("User",0);
+                SharedPreferences.Editor editor = editor = settings.edit();
+                editor.putString("id",id);
+                editor.putString("firstname",name);
+                editor.apply();
+
                 Intent i = new Intent(this.context, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);

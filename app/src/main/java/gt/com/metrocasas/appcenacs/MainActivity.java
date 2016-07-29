@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -76,29 +78,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_lock_lock)
-                    .setTitle("Cerrar Sesión")
-                    .setMessage("¿Está seguro que desea cerrar su sesión y salir?")
-                    .setPositiveButton("Si", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -122,6 +101,11 @@ public class MainActivity extends AppCompatActivity
             bundle.putString("id", userid);
             nird.setArguments(bundle);
             nird.show(this.getFragmentManager(),"");
+
+            SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+            String dato = settings.getString("id","No Funciona");
+            Log.i("Setting: ", dato);
+
             return true;
         }
 
@@ -159,6 +143,30 @@ public class MainActivity extends AppCompatActivity
                     .commit();
             toolbar.setTitle("Casa Asunción");
         }
+        else if (id == R.id.logout)
+        {
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_lock_lock)
+                        .setTitle("Cerrar Sesión")
+                        .setMessage("¿Está seguro que desea cerrar su sesión y salir?")
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putString("id",null);
+                                editor.putString("firstname",null);
+                                editor.apply();
+
+                                finish();
+
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -176,6 +184,10 @@ public class MainActivity extends AppCompatActivity
                 Uri.parse("android-app://gt.com.metrocasas.appcenacs/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
+
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+        String name = settings.getString("firstname",null);
+        Snackbar.make(toolbar,"Bienvenido(a) "+name,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -267,4 +279,9 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        moveTaskToBack(true);
+    }
 }

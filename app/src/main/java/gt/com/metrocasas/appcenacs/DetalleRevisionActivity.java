@@ -1,5 +1,6 @@
 package gt.com.metrocasas.appcenacs;
 
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -229,25 +230,9 @@ public class DetalleRevisionActivity extends AppCompatActivity {
                 "us-east-1:66fdcec3-f2c0-4015-80ef-f9efcad31fb3", // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
-        return credentialsProvider;
     }
 
-    public void showNotification() {
-        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, DetalleRevisionActivity.class), 0);
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("Título")
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Subtitulo")
-                .setContentText("Este es el texto")
-                .setContentIntent(pi)
-                .setAutoCancel(true)
-                .build();
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
-    }
-
-    }
 
     private boolean bandera = true;
     public void upLoadPictures() {
