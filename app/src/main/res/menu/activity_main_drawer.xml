@@ -12,4 +12,14 @@
             android:icon="@drawable/casa"/>
     </group>
 
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:title="@string/logout"
+                android:icon="@android:drawable/ic_notification_clear_all"
+                />
+        </menu>
+    </item>
+
 </menu>
