@@ -67,8 +67,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     public final static String BUCKET_NAME = "projectsgtimages";
     public static final int NOTIFICATION_ID = 1;
 
-    NotificationCompat.Builder builder;
-    NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +97,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
                 subirInformacion();
             }
         });
-
-        builder = new NotificationCompat.Builder(this);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         //<editor-fold desc="Ocultar CardViews">
         final TextView titulo_ci = (TextView) findViewById(R.id.text_view_title_cenac_interno);
@@ -259,19 +254,9 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         notificationManager.notify(0, notification);
     }
 
-    public void sendNotification(View view) {
-
-        builder.setSmallIcon(android.R.drawable.btn_default_small);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
-        builder.setContentTitle("Revisiones");
-        builder.setContentText("Se completó la carga de archivos");
-        builder.setProgress(100, 0, true);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
 
     private boolean bandera = true;
     public void upLoadPictures() {
-        sendNotification(v);
         bandera = true;
         List<Elemento> elements = getListElements();
         ArrayList<File> files = new ArrayList<>();
@@ -298,8 +283,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
                     @Override
                     public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                        builder.setProgress((int)bytesTotal, (int)bytesCurrent, true);
-                        notificationManager.notify(NOTIFICATION_ID, builder.build());
+                        progreso.setProgress((int) bytesCurrent);
                     }
 
                     @Override

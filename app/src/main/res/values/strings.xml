@@ -34,7 +34,7 @@
 
     <string-array name="lista_proyectos">
         <item>Viventi</item>
-        <item>Casa Asunción</item>
+        <item>Casa Asuncion</item>
     </string-array>
     <string-array name="lista_clasificacion">
         <item>Interno</item>

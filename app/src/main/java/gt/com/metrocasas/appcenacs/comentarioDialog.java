@@ -64,6 +64,7 @@ public class comentarioDialog extends DialogFragment {
                                     item.setImagePath(imgFile.getAbsolutePath());
                                 }
                                 item.setComentario(comentario.getText().toString());
+                                item.setEstado(true);
                                 btn_coment.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                 btn_coment.setTextColor(Color.WHITE);
                             }else{

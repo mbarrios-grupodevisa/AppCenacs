@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity
             proyecto = "Casa Asunción";
             Fragment fragment = new FragmentRevisionesList();
             Bundle args = new Bundle();
-            args.putString("proyecto", "Casa Asunción");
+            args.putString("proyecto", "Casa Asuncion");
             args.putString("id", userid);
             fragment.setArguments(args);
             FragmentManager fragmentManager = getFragmentManager();
@@ -270,17 +270,6 @@ public class MainActivity extends AppCompatActivity
         public void onLocationChanged(final Location location) {
             longitudeNetwork = location.getLongitude();
             latitudeNetwork = location.getLatitude();
-            Toast.makeText(MainActivity.this, "Network: "+longitudeNetwork+"-"+latitudeNetwork, Toast.LENGTH_SHORT).show();
-            Log.i("Coordedas", "Network: "+latitudeNetwork+","+longitudeNetwork);
-
-            /*runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //longitudeValueNetwork.setText(longitudeNetwork + "");
-                    //latitudeValueNetwork.setText(latitudeNetwork + "");
-                    Toast.makeText(MainActivity.this, "Network: "+longitudeNetwork+"-"+latitudeNetwork, Toast.LENGTH_SHORT).show();
-                }
-            });*/
         }
 
         @Override
