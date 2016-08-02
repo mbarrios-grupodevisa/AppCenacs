@@ -1,19 +1,19 @@
 package gt.com.metrocasas.appcenacs;
 
-import android.annotation.TargetApi;
+import android.*;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.ClipData;
-import android.content.Context;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -28,20 +28,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        LocationListener
+        implements NavigationView.OnNavigationItemSelectedListener
 {
 
-    private GoogleApiClient client;
+    private GoogleApiClient googleApiClient;
+    public static final String GEOFENCE_ID = "metrocasas";
     private Toolbar toolbar;
     public String userid, proyecto;
     double longitudeNetwork, latitudeNetwork;
     MenuItem btn ;
+    String name, last;
 
 
     @Override
@@ -62,32 +70,34 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        //Toast.makeText(getApplicationContext(), "CONECTADA", Toast.LENGTH_LONG).show();
+                    }
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        //Toast.makeText(getApplicationContext(), "SUSPENDIDO", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .build();
         setFragment(1);
-
-        // Get the location manager
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60 * 1000, 10, locationListenerNetwork);
         hello();
 
     }
 
     private void hello() {
         SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
-        String name = settings.getString("firstname", null);
-        String last = settings.getString("lastname", null);
+        name = settings.getString("firstname", null);
+        last = settings.getString("lastname", null);
         Snackbar.make(toolbar,"Bienvenido(a) " + name + " " + last, Snackbar.LENGTH_LONG).show();
     }
 
@@ -101,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setEnabled(false);
+        menu.getItem(0).setEnabled(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -114,18 +124,30 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            NuevoItemRevisionDialog nird = new NuevoItemRevisionDialog();
-            Bundle bundle = new Bundle();
-            bundle.putString("proyecto", proyecto);
-            bundle.putDouble("latitud",latitudeNetwork);
-            bundle.putDouble("longitud",longitudeNetwork);
-            bundle.putString("id", userid);
-            nird.setArguments(bundle);
-            nird.show(this.getFragmentManager(),"");
+
+            try {
+                solicitarGPS();
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openDialog()
+    {
+        NuevoItemRevisionDialog nird = new NuevoItemRevisionDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("proyecto", proyecto);
+        bundle.putDouble("latitud",latitudeNetwork);
+        bundle.putDouble("longitud",longitudeNetwork);
+        bundle.putString("id", userid);
+        nird.setArguments(bundle);
+        nird.show(this.getFragmentManager(),"");
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -192,27 +214,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "Main Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://gt.com.metrocasas.appcenacs/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+        googleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "Main Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://gt.com.metrocasas.appcenacs/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+        googleApiClient.disconnect();
     }
 
     private void setFragment(int id) {
@@ -241,34 +249,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    @Override
-    public void onLocationChanged(Location location) {
-        //int lat = (int) (location.getLatitude());
-        ///int lng = (int) (location.getLongitude());
-        //Log.i("COORDENADAS:",""+lat+"-"+lng);
-        //String msg = "New Latitude: " + location.getLatitude()
-        //        + "New Longitude: " + location.getLongitude();
-        //Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-        //Toast.makeText(getBaseContext(), "Gps is turned on!! ",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        //Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        //startActivity(intent);
-        //Toast.makeText(getBaseContext(), "Gps is turned off!! ",Toast.LENGTH_SHORT).show();
-    }
-
     private final LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(final Location location) {
             longitudeNetwork = location.getLongitude();
@@ -292,12 +272,115 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onProviderDisabled(String s) {
-
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
         }
     };
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    public void solicitarGPS() throws Settings.SettingNotFoundException {
+
+        if (Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE) == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Activar GPS");
+            builder.setMessage("Se necesita tener activo el GPS para usar esta función.");
+            builder.setIcon(android.R.drawable.ic_menu_info_details);
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    Intent gpsOptionsIntent = new Intent(
+                            android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(gpsOptionsIntent, 1);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            startLocationRequest();
+            startGeofenceMonitoring();
+        }
+    }
+
+    public void startLocationRequest() {
+        try {
+            LocationRequest locationRequest = LocationRequest.create()
+                    .setInterval(10000)
+                    .setFastestInterval(5000)
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
+                    locationRequest, new com.google.android.gms.location.LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            Log.i("LOCATION", "UBICACION: " + location.getLatitude() + ", " + location.getLongitude());
+                        }
+                    });
+        } catch (SecurityException se) {
+        }
+    }
+
+    public void startGeofenceMonitoring() {
+        try {
+            Geofence geofence = new Geofence.Builder()
+                    .setRequestId(GEOFENCE_ID)
+                    .setCircularRegion(14.6050705,-90.5164723, 100)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setNotificationResponsiveness(1000)
+                    .setLoiteringDelay(1000)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                    .build();
+
+            GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                    .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                    .addGeofence(geofence)
+                    .build();
+
+            Intent intent = new Intent(this, GeofenceService.class);
+            intent.putExtra("userid", userid);
+            intent.putExtra("proyecto", proyecto);
+            intent.putExtra("nombre", name);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if (!googleApiClient.isConnected()) {
+                Toast.makeText(this, "GOOGLE API NO CONECTADA", Toast.LENGTH_SHORT).show();
+            } else {
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "NO HAY PERMISOS", Toast.LENGTH_SHORT).show();
+                }
+                LocationServices.GeofencingApi.addGeofences(googleApiClient, geofencingRequest, pendingIntent)
+                        .setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                if (status.isSuccess()) {
+                                    Toast.makeText(getApplicationContext(), "GEOFENCE AÑADIDO", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "ACTIVE GPS", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void stopGeofenceMonitoring () {
+        Toast.makeText(this, "ELIMINANDO GEOFENCE", Toast.LENGTH_SHORT).show();
+        ArrayList<String> geofenceids = new ArrayList<>();
+        geofenceids.add(GEOFENCE_ID);
+        LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
     }
 }
