@@ -3,6 +3,7 @@ package gt.com.metrocasas.appcenacs;
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     public String userid, proyecto;
     double longitudeNetwork, latitudeNetwork;
+    MenuItem btn ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60 * 1000, 10, locationListenerNetwork);
         hello();
+
     }
 
     private void hello() {
@@ -90,7 +95,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        btn = (MenuItem) menu.findItem(R.id.action_settings);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setEnabled(false);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -261,6 +273,11 @@ public class MainActivity extends AppCompatActivity
         public void onLocationChanged(final Location location) {
             longitudeNetwork = location.getLongitude();
             latitudeNetwork = location.getLatitude();
+            //Menu menu = (Menu) findViewById(R.menu.main);
+            //menu.getItem(0).setEnabled(true);
+            btn.setEnabled(true);
+            Toast.makeText(getApplicationContext(),latitudeNetwork+","+longitudeNetwork,Toast.LENGTH_LONG).show();
+            Log.i("LocationListener: ", location.toString());
         }
 
         @Override
