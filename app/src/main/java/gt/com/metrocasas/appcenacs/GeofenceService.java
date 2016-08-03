@@ -21,7 +21,7 @@ public class GeofenceService extends IntentService {
     NotificationManager notificationManager;
     Notification myNotification;
     private static final int MY_NOTIFICATION_ID = 1;
-    String user, proyecto, name;
+    String user, proyecto, name, latitud, longitud;
 
     public GeofenceService() {
         super(TAG);
@@ -38,6 +38,8 @@ public class GeofenceService extends IntentService {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         user = intent.getStringExtra("userid");
         name = intent.getStringExtra("nombre");
+        latitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLatitude());
+        longitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLongitude());
         if(!geofencingEvent.hasError()) {
             int transition = geofencingEvent.getGeofenceTransition();
             List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
@@ -63,7 +65,9 @@ public class GeofenceService extends IntentService {
                 new Intent(this, DetalleRevisionActivity.class)
                         .putExtra("id", user)
                         .putExtra("proyecto", proyecto)
-                        .putExtra("estado", estado),
+                        .putExtra("estado", estado)
+                        .putExtra("latitud", latitud)
+                        .putExtra("longitud", longitud),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (proyecto.equals("Viventi")) {

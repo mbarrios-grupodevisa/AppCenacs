@@ -52,7 +52,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
     private String proyecto;
     private String user;
-    private String fechaRevision, estado;
+    private String fechaRevision, estado, latitud, longitud;
     private View v;
     TextView info;
     LinearLayout p, q;
@@ -76,6 +76,8 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         proyecto = getIntent().getExtras().getString("proyecto");
         user = getIntent().getExtras().getString("id");
         estado = getIntent().getExtras().getString("estado");
+        latitud = getIntent().getExtras().getString("latitud");
+        longitud = getIntent().getExtras().getString("longitud");
         fechaRevision = new SimpleDateFormat("dd.MM.yy hh:mm a").format(new Date());
         this.setTitle(proyecto);
 
@@ -201,7 +203,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         final Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         String fechaRegistro = today.format("%C %B %l:%M %p");
-        new IngresoElemento(this).execute(user, estado, proyecto, "14.60", "-90.55", fechaRegistro);
+        new IngresoElemento(this).execute(user, estado, proyecto, latitud, longitud, fechaRegistro);
         new GetElementos(this, aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion, p, q, progreso).execute(proyecto);
     }
 
