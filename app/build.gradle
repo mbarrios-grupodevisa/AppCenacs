@@ -40,7 +40,5 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-s3:2.2.20'
     compile 'org.projectlombok:lombok:1.12.6'
     compile 'com.google.android.gms:play-services-location:9.0.0'
-    compile 'com.google.firebase:firebase-core:9.0.0'
-    compile 'com.google.firebase:firebase-database:9.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

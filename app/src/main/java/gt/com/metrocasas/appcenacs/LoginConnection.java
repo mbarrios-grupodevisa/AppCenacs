@@ -96,10 +96,11 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
                 String last = objecto.getString("lastname");
 
                 SharedPreferences settings = context.getSharedPreferences("User",0);
-                SharedPreferences.Editor editor = editor = settings.edit();
+                SharedPreferences.Editor editor = settings.edit();
                 editor.putString("id",id);
                 editor.putString("firstname",name);
                 editor.putString("lastname", last);
+                editor.putString("estado", "Salida");
                 editor.apply();
 
                 Intent i = new Intent(this.context, MainActivity.class);

@@ -52,7 +52,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
     private String proyecto;
     private String user;
-    private String fechaRevision;
+    private String fechaRevision, estado;
     private View v;
     TextView info;
     LinearLayout p, q;
@@ -75,6 +75,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         v = findViewById(R.id.detalle);
         proyecto = getIntent().getExtras().getString("proyecto");
         user = getIntent().getExtras().getString("id");
+        estado = getIntent().getExtras().getString("estado");
         fechaRevision = new SimpleDateFormat("dd.MM.yy hh:mm a").format(new Date());
         this.setTitle(proyecto);
 
@@ -200,7 +201,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         final Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         String fechaRegistro = today.format("%C %B %l:%M %p");
-        new IngresoElemento(this).execute(user, "Ingreso", proyecto, "14.60", "-90.55", fechaRegistro);
+        new IngresoElemento(this).execute(user, estado, proyecto, "14.60", "-90.55", fechaRegistro);
         new GetElementos(this, aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion, p, q, progreso).execute(proyecto);
     }
 

@@ -1,6 +1,5 @@
 package gt.com.metrocasas.appcenacs;
 
-import android.*;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity
 
     private GoogleApiClient googleApiClient;
     public static final String GEOFENCE_VIVENTI_ID = "Viventi";
+    public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
     private Toolbar toolbar;
     public String userid, proyecto;
     double longitudeNetwork, latitudeNetwork;
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         btn = (MenuItem) menu.findItem(R.id.action_settings);
         return true;
@@ -117,24 +116,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             try {
                 solicitarGPS();
             } catch (Settings.SettingNotFoundException e) {
                 e.printStackTrace();
             }
-
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -333,7 +323,7 @@ public class MainActivity extends AppCompatActivity
 
     public void startGeofenceMonitoring() {
         try {
-            Geofence geofence = new Geofence.Builder()
+            Geofence geofence1 = new Geofence.Builder()
                     .setRequestId(GEOFENCE_VIVENTI_ID)
                     .setCircularRegion(14.6050705,-90.5164723, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
@@ -342,14 +332,23 @@ public class MainActivity extends AppCompatActivity
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
                     .build();
 
+            Geofence geofence2 = new Geofence.Builder()
+                    .setRequestId(GEOFENCE_CASA_ID)
+                    .setCircularRegion(14.592738,-90.513156, 100)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setNotificationResponsiveness(1000)
+                    .setLoiteringDelay(1000)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                    .build();
+
             GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
                     .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                    .addGeofence(geofence)
+                    .addGeofence(geofence1)
+                    .addGeofence(geofence2)
                     .build();
 
             Intent intent = new Intent(this, GeofenceService.class);
             intent.putExtra("userid", userid);
-            intent.putExtra("proyecto", GEOFENCE_VIVENTI_ID);
             intent.putExtra("nombre", name);
             PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

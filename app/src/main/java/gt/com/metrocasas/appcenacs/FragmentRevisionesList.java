@@ -55,7 +55,7 @@ public class FragmentRevisionesList extends Fragment {
                 android.R.color.holo_red_light);
 
         RecyclerView recyclerView = (RecyclerView) partenView.findViewById(R.id.recycler_view);
-        fab = (FloatingActionButton) partenView.findViewById(R.id.btn_nuevo);
+        /*fab = (FloatingActionButton) partenView.findViewById(R.id.btn_nuevo);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +64,7 @@ public class FragmentRevisionesList extends Fragment {
                 intent.putExtra("id", userid);
                 startActivityForResult(intent,ACTIVITY_REQUEST);
             }
-        });
+        });*/
 
         rAdapter = new RevisionAdapter(listRevision);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));

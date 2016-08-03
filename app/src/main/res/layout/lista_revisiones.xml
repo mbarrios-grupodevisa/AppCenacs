@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
+            style="?android:attr/progressBarStyleLargeInverse"
             android:layout_gravity="center_horizontal" />
 
         <TextView
@@ -49,15 +49,5 @@
 
        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-
-       <android.support.design.widget.FloatingActionButton
-           android:id="@+id/btn_nuevo"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_gravity="bottom|end"
-           android:layout_margin="@dimen/fab_margin"
-           android:tint="@color/cardview_light_background"
-           app:elevation="5dp"
-           android:src="@android:drawable/ic_input_add" />
 
 </FrameLayout>

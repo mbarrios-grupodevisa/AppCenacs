@@ -1,6 +1,7 @@
 package gt.com.metrocasas.appcenacs;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
 
     Context context;
     public static String ERROR = "Error en los datos, revise";
+    public String estado = "";
 
     public IngresoElemento(Context context) {
         this.context = context;
@@ -25,7 +27,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
         try
         {
             String userid = params[0];
-            String registro = params[1];
+            estado = params[1];
             String proyecto = params[2];
             String latitud = params[3];
             String longitud = params[4];
@@ -33,7 +35,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
 
             String link = "http://atreveteacrecer.metrocasas.com.gt/insertRegistro.php";
             String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8")
-                    + "&" + URLEncoder.encode("registro", "UTF-8") + "=" + URLEncoder.encode(registro, "UTF-8")
+                    + "&" + URLEncoder.encode("registro", "UTF-8") + "=" + URLEncoder.encode(estado, "UTF-8")
                     + "&" + URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8")
                     + "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode(latitud, "UTF-8")
                     + "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(longitud, "UTF-8")
@@ -73,6 +75,11 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+        if (result.equals("Registro Correcto")) {
+            SharedPreferences settings = context.getSharedPreferences("User", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("estado", estado);
+            editor.apply();
+        }
     }
-
 }
