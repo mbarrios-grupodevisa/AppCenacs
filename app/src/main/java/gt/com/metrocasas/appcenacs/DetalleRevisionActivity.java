@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -196,6 +197,10 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
         //</editor-fold>
 
+        final Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        String fechaRegistro = today.format("%C %B %l:%M %p");
+        new IngresoElemento(this).execute(user, "Ingreso", proyecto, "14.60", "-90.55", fechaRegistro);
         new GetElementos(this, aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion, p, q, progreso).execute(proyecto);
     }
 

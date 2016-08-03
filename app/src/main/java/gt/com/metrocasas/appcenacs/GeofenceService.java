@@ -42,18 +42,22 @@ public class GeofenceService extends IntentService {
             String requestid = geofence.getRequestId();
 
             if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) {
-                sendNotification("Bienvenido " + requestid, "No olvide hacer su registro de entrada");
+                sendNotification("Bienvenido a " + requestid, "No olvide hacer su registro de entrada");
             } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) {
                 sendNotification("Salida de " + requestid, "Vuelva pronto");
             } else if (transition == Geofence.GEOFENCE_TRANSITION_DWELL) {
-                //sendNotification(requestid);
+
             }
         }
     }
 
     private void sendNotification(String titulo, String msg) {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                new Intent(this, DetalleRevisionActivity.class)
+                        .putExtra("id", user)
+                        .putExtra("proyecto", proyecto),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         myNotification = new Notification.Builder(getApplicationContext())
                 .setContentTitle(titulo)
                 .setContentText(msg)
@@ -65,6 +69,4 @@ public class GeofenceService extends IntentService {
                 .build();
         notificationManager.notify(MY_NOTIFICATION_ID, myNotification);
     }
-
-
 }

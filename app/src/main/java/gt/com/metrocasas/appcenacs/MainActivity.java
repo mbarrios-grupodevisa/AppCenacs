@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
 {
 
     private GoogleApiClient googleApiClient;
-    public static final String GEOFENCE_ID = "metrocasas";
+    public static final String GEOFENCE_VIVENTI_ID = "Viventi";
     private Toolbar toolbar;
     public String userid, proyecto;
     double longitudeNetwork, latitudeNetwork;
@@ -138,8 +138,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void openDialog()
-    {
+    public void openDialog() {
         NuevoItemRevisionDialog nird = new NuevoItemRevisionDialog();
         Bundle bundle = new Bundle();
         bundle.putString("proyecto", proyecto);
@@ -335,7 +334,7 @@ public class MainActivity extends AppCompatActivity
     public void startGeofenceMonitoring() {
         try {
             Geofence geofence = new Geofence.Builder()
-                    .setRequestId(GEOFENCE_ID)
+                    .setRequestId(GEOFENCE_VIVENTI_ID)
                     .setCircularRegion(14.6050705,-90.5164723, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(1000)
@@ -350,7 +349,7 @@ public class MainActivity extends AppCompatActivity
 
             Intent intent = new Intent(this, GeofenceService.class);
             intent.putExtra("userid", userid);
-            intent.putExtra("proyecto", proyecto);
+            intent.putExtra("proyecto", GEOFENCE_VIVENTI_ID);
             intent.putExtra("nombre", name);
             PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -380,7 +379,7 @@ public class MainActivity extends AppCompatActivity
     public void stopGeofenceMonitoring () {
         Toast.makeText(this, "ELIMINANDO GEOFENCE", Toast.LENGTH_SHORT).show();
         ArrayList<String> geofenceids = new ArrayList<>();
-        geofenceids.add(GEOFENCE_ID);
+        geofenceids.add(GEOFENCE_VIVENTI_ID);
         LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
     }
 }
