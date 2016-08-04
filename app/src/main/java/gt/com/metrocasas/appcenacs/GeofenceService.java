@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import java.util.List;
@@ -54,8 +52,6 @@ public class GeofenceService extends IntentService {
             } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", null).equals("Salida")) {
                     sendNotification("Salida de " + requestid, "No olvides hacer tu registro de salida", "Salida");
                 }
-            } else if (transition == Geofence.GEOFENCE_TRANSITION_DWELL) {
-
             }
         }
     }

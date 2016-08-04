@@ -11,23 +11,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -36,9 +27,6 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentRevisionesList extends Fragment {
 
@@ -123,7 +111,7 @@ public class FragmentRevisionesList extends Fragment {
                     dialog.dismiss();
                     Intent gpsOptionsIntent = new Intent(
                             android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivityForResult(gpsOptionsIntent, 1);
+                    startActivity(gpsOptionsIntent);
                 }
             });
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -192,6 +180,7 @@ public class FragmentRevisionesList extends Fragment {
                         }
                     });
         } catch (SecurityException se) {
+            Log.i("ERROR", se.toString());
         }
     }
 
@@ -251,12 +240,12 @@ public class FragmentRevisionesList extends Fragment {
         }
     }
 
-    public void stopGeofenceMonitoring () {
+    /*public void stopGeofenceMonitoring () {
         Toast.makeText(getActivity(), "ELIMINANDO GEOFENCE", Toast.LENGTH_SHORT).show();
         ArrayList<String> geofenceids = new ArrayList<>();
         geofenceids.add(GEOFENCE_VIVENTI_ID);
         LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
-    }
+    }*/
 
     @Override
     public void onResume() {
