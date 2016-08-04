@@ -12,6 +12,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -61,6 +63,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     TextView info;
     LinearLayout p, q;
     ProgressBar progreso;
+    MenuItem btn ;
 
     private static final int VIVENTI = 3;
     private static final int CASA_ASUNCION = 4;
@@ -73,12 +76,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_detalle_revision);
 
-        p = (LinearLayout)findViewById(R.id.layoutprogress2);
-        q = (LinearLayout)findViewById(R.id.layoutlist2);
-        progreso = (ProgressBar)findViewById(R.id.progressBar2);
-        progreso.setProgress(0);
-        info = (TextView)findViewById(R.id.tvUpload2);
-        v = findViewById(R.id.detalle);
+
         proyecto = getIntent().getExtras().getString("proyecto");
         user = getIntent().getExtras().getString("id");
         estado = getIntent().getExtras().getString("estado");
@@ -116,7 +114,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             }
         });
 
-        final TextView titulo_ce = (TextView) findViewById(R.id.text_view_title_cenac_externo);
+        /*final TextView titulo_ce = (TextView) findViewById(R.id.text_view_title_cenac_externo);
         titulo_ce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +171,18 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             }
         });
         //</editor-fold>
+        */
+        initAdapters();
 
+        if(isNetworkAvailable()) {
+            hilosSecundarios();
+        } else {
+            Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void initAdapters()
+    {
         //<editor-fold desc="Adaptadores">
         aAdapterCI = new ElementoAdapter(listItemCI, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -183,34 +192,28 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
         aAdapterCE = new ElementoAdapter(listItemCE, this);
         RecyclerView.LayoutManager mLayoutManagerCE = new LinearLayoutManager(this);
-        recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
-        recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewCenacExterno.setAdapter(aAdapterCE);
+        //recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
+        //recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewCenacExterno.setAdapter(aAdapterCE);
 
         aAdapterDespensa = new ElementoAdapter(listItemDespensa, this);
         RecyclerView.LayoutManager mLayoutManagerDespensa = new LinearLayoutManager(this);
-        recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
-        recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewDespensa.setAdapter(aAdapterDespensa);
+        //recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
+        //recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewDespensa.setAdapter(aAdapterDespensa);
 
         aAdapterLimpieza = new ElementoAdapter(listItemLimpieza, this);
         RecyclerView.LayoutManager mLayoutManagerLimpieza = new LinearLayoutManager(this);
-        recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
-        recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
+        //recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
+        //recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
 
         aAdapterConstruccion = new ElementoAdapter(listItemCostrucion, this);
         RecyclerView.LayoutManager mLayoutManagerConstruccion = new LinearLayoutManager(this);
-        recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
-        recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
+        //recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
+        //recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
         //</editor-fold>
-
-        if(isNetworkAvailable()) {
-            hilosSecundarios();
-        } else {
-            Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
-        }
     }
 
     public boolean isNetworkAvailable() {
@@ -221,6 +224,13 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     }
 
     public void hilosSecundarios() {
+        p = (LinearLayout)findViewById(R.id.layoutprogress2);
+        q = (LinearLayout)findViewById(R.id.layoutlist2);
+
+        progreso = (ProgressBar)findViewById(R.id.progressBar2);
+        progreso.setProgress(0);
+        info = (TextView)findViewById(R.id.tvUpload2);
+        v = findViewById(R.id.detalle);
         final Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         String fechaRegistro = today.format("%C %B %l:%M %p");
@@ -348,4 +358,34 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             return "null";
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        btn = (MenuItem) menu.findItem(R.id.action_settings);
+        if(isNetworkAvailable())
+        {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            if(isNetworkAvailable()) {
+                limpiarCampos();
+                initAdapters();
+                hilosSecundarios();
+                btn.setVisible(false);
+                return super.onOptionsItemSelected(item);
+            } else {
+                Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
+            }
+        }
+        return true;
+    }
+
+
 }

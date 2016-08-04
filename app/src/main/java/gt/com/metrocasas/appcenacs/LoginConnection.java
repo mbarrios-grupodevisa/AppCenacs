@@ -101,11 +101,13 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
                 editor.putString("firstname",name);
                 editor.putString("lastname", last);
                 editor.putString("estado", "Salida");
+                editor.putString("service", "Stop");
                 editor.apply();
 
                 Intent i = new Intent(this.context, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
+                bundle.putString("init", "start");
                 i.putExtras(bundle);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.context.startActivity(i);

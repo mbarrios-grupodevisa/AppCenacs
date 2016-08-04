@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity
             Bundle args = new Bundle();
             args.putString("proyecto", "Viventi");
             args.putString("id", userid);
+            args.putString("init", init);
             fragment.setArguments(args);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity
             Bundle args = new Bundle();
             args.putString("proyecto", "Casa Asuncion");
             args.putString("id", userid);
+            args.putString("init", init);
             fragment.setArguments(args);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()

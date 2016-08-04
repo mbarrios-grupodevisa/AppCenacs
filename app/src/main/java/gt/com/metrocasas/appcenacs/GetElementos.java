@@ -85,6 +85,8 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPreExecute() {
+        p.setVisibility(View.VISIBLE);
+        q.setVisibility(View.GONE);
     }
 
     @Override
@@ -123,6 +125,7 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
         {
             cAdapter.hidenCardViewCenacInterno();
         }
+        /*
         if(listExternos.isEmpty())
         {
             cAdapter.hidenCardViewCenacExterno();
@@ -139,5 +142,6 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
         {
            cAdapter.hidenCardViewConstruccion();
         }
+        */
     }
 }

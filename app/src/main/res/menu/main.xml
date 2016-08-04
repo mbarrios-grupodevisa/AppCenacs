@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/huella"
-        android:title="Nuevo Elemento"
+        android:icon="@android:drawable/stat_notify_sync_noanim"
+        android:title="Recargar"
         app:showAsAction="ifRoom" />
 </menu>

@@ -18,6 +18,11 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
 
     private List<Elemento> listElemento;
     private Activity actividad;
+
+    public void setTam(int tam) {
+        this.tam = tam;
+    }
+
     private int tam = 0;
 
     public ElementoAdapter(List<Elemento> listElemento,Activity ac) {
@@ -94,7 +99,7 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         CardView card_view = (CardView) actividad.findViewById(R.id.card_view_cenac_interno);
         card_view.setVisibility(View.GONE);
     }
-
+    /*
     public void hidenCardViewCenacExterno()
     {
         CardView card_view = (CardView) actividad.findViewById(R.id.card_view_cenac_externo);
@@ -118,5 +123,5 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         CardView card_view = (CardView) actividad.findViewById(R.id.card_view_construccion);
         card_view.setVisibility(View.GONE);
     }
-
+    */
 }

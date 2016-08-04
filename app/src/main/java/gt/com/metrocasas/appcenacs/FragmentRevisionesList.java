@@ -48,7 +48,7 @@ public class FragmentRevisionesList extends Fragment {
     public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
     private GoogleApiClient googleApiClient;
     public ImageView registro;
-    String longitudeNetwork, latitudeNetwork;
+    String longitudeNetwork, latitudeNetwork, service;
     boolean bandera  = true;
 
     @Override
@@ -59,6 +59,7 @@ public class FragmentRevisionesList extends Fragment {
         name = settings.getString("firstname", null);
         last = settings.getString("lastname", null);
         estado = settings.getString("estado", null);
+        service = settings.getString("service",null);
         userid = getArguments().getString("id");
         init = getArguments().getString("init");
         proyecto = getArguments().getString("proyecto");
@@ -135,14 +136,19 @@ public class FragmentRevisionesList extends Fragment {
         }
         else
         {
-            if(init.equals("normal"))
+            if(service.equals("Stop"))
             {
                 startLocationRequest();
+                startGeofenceMonitoring();
+                SharedPreferences settings = getActivity().getSharedPreferences("User",0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("service","Start");
+                service = "Start";
+                editor.apply();
             }
             else
             {
                 startLocationRequest();
-                startGeofenceMonitoring();
             }
         }
     }

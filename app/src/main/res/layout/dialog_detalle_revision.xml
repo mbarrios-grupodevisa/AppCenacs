@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/layoutprogress2"
         android:gravity="center"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <ProgressBar
@@ -37,7 +37,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/layoutlist2">
     <ScrollView
         android:layout_width="match_parent"
@@ -49,10 +49,6 @@
             android:orientation="vertical">
 
             <include layout="@layout/card_cenac_interno"/>
-            <include layout="@layout/card_cenac_externo"/>
-            <include layout="@layout/card_despensa"/>
-            <include layout="@layout/card_limpieza"/>
-            <include layout="@layout/card_construccion"/>
 
             <Button
                 android:layout_width="match_parent"
