@@ -42,11 +42,11 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
         this.dAdapter = dAdapter;
         this.lAdapter = lAdapter;
         this.cAdapter = cAdapter;
-        this.listInternos = iAdapter.getListElemento();
-        this.listExternos = eAdapter.getListElemento();
-        this.listDespensa = dAdapter.getListElemento();
-        this.listLimpieza = lAdapter.getListElemento();
-        this.listConstruccion = cAdapter.getListElemento();
+        if(iAdapter!=null) this.listInternos = iAdapter.getListElemento();
+        if(eAdapter!=null) this.listExternos = eAdapter.getListElemento();
+        if(dAdapter!=null) this.listDespensa = dAdapter.getListElemento();
+        if(lAdapter!=null) this.listLimpieza = lAdapter.getListElemento();
+        if(cAdapter!=null) this.listConstruccion = cAdapter.getListElemento();
         this.p = p;
         this.q = q;
         this.progreso = progreso;
@@ -124,7 +124,7 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
 
         if(listInternos.isEmpty())
         {
-            cAdapter.hidenCardViewCenacInterno();
+            iAdapter.hidenCardViewCenacInterno();
         }
         /*
         if(listExternos.isEmpty())
