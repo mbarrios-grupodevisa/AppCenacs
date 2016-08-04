@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 public class NuevoItemRevisionDialog extends DialogFragment {
 
-    private TextView nombre_proyecto;
-    private TextView hora;
     private Spinner lista_estado;
 
 
@@ -27,14 +25,14 @@ public class NuevoItemRevisionDialog extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v = inflater.inflate(R.layout.dialog_ingresar_item_revision, null);
-        nombre_proyecto = (TextView) v.findViewById(R.id.proyecto);
-        hora = (TextView) v.findViewById(R.id.hora);
+        TextView nombre_proyecto = (TextView) v.findViewById(R.id.proyecto);
+        TextView hora = (TextView) v.findViewById(R.id.hora);
         lista_estado = (Spinner) v.findViewById(R.id.clasificacion);
         final String proyecto = getArguments().getString("proyecto");
         final double lat = getArguments().getDouble("latitud");
         final double lng = getArguments().getDouble("longitud");
         final String userid = getArguments().getString("id");
-        nombre_proyecto.setText("Proyecto: "+proyecto);
+        nombre_proyecto.setText("Proyecto: " + proyecto);
         final Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         hora.setText("Fecha y Hora: " + today.format("%C %B %l:%M %p"));
