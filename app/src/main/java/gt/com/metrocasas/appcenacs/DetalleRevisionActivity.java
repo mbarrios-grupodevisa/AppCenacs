@@ -41,20 +41,22 @@ import java.util.List;
 
 public class DetalleRevisionActivity extends AppCompatActivity {
 
-    private List<Elemento> listItemCE = new ArrayList<>();
-    private RecyclerView recyclerViewCenacExterno;
 
     private List<Elemento> listItemCI = new ArrayList<>();
     private RecyclerView recyclerViewCenacInterno;
 
+    private List<Elemento> listItemCE = new ArrayList<>();
+    //private RecyclerView recyclerViewCenacExterno;
+
+
     private List<Elemento> listItemDespensa = new ArrayList<>();
-    private RecyclerView recyclerViewDespensa;
+    //private RecyclerView recyclerViewDespensa;
 
     private List<Elemento> listItemLimpieza = new ArrayList<>();
-    private RecyclerView recyclerViewLimpieza;
+    //private RecyclerView recyclerViewLimpieza;
 
     private List<Elemento> listItemCostrucion = new ArrayList<>();
-    private RecyclerView recyclerViewConstruccion;
+    //private RecyclerView recyclerViewConstruccion;
 
     private String proyecto;
     private String user;
@@ -86,10 +88,12 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         this.setTitle(proyecto);
 
         recyclerViewCenacInterno = (RecyclerView) findViewById(R.id.recycler_view_ci);
-        recyclerViewCenacExterno = (RecyclerView) findViewById(R.id.recycler_view_ce);
-        recyclerViewDespensa = (RecyclerView) findViewById(R.id.recycler_view_despensa);
-        recyclerViewLimpieza = (RecyclerView) findViewById(R.id.recycler_view_limpieza);
-        recyclerViewConstruccion = (RecyclerView) findViewById(R.id.recycler_view_construccion);
+
+        //recyclerViewCenacExterno = (RecyclerView) findViewById(R.id.recycler_view_ce);
+        //recyclerViewDespensa = (RecyclerView) findViewById(R.id.recycler_view_despensa);
+        //recyclerViewLimpieza = (RecyclerView) findViewById(R.id.recycler_view_limpieza);
+        //recyclerViewConstruccion = (RecyclerView) findViewById(R.id.recycler_view_construccion);
+
         Button enviar_datos = (Button) findViewById(R.id.btn_enviar_datos);
 
         enviar_datos.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +103,18 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             }
         });
 
+        initCardViews();
+        initAdapters();
+
+        if(isNetworkAvailable()) {
+            hilosSecundarios();
+        } else {
+            Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void initCardViews()
+    {
         //<editor-fold desc="Ocultar CardViews">
         final TextView titulo_ci = (TextView) findViewById(R.id.text_view_title_cenac_interno);
         titulo_ci.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +130,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
             }
         });
 
+        //<editor-fold desc="CardViews sin Utilizar">
         /*final TextView titulo_ce = (TextView) findViewById(R.id.text_view_title_cenac_externo);
         titulo_ce.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,49 +187,45 @@ public class DetalleRevisionActivity extends AppCompatActivity {
                 }
             }
         });
-        //</editor-fold>
         */
-        initAdapters();
+        //</editor-fold>
 
-        if(isNetworkAvailable()) {
-            hilosSecundarios();
-        } else {
-            Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
-        }
     }
 
     private void initAdapters()
     {
-        //<editor-fold desc="Adaptadores">
         aAdapterCI = new ElementoAdapter(listItemCI, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerViewCenacInterno.setLayoutManager(mLayoutManager);
         recyclerViewCenacInterno.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCenacInterno.setAdapter(aAdapterCI);
 
+        //<editor-fold desc="Adaptadores No Utilizados">
+        /*
         aAdapterCE = new ElementoAdapter(listItemCE, this);
         RecyclerView.LayoutManager mLayoutManagerCE = new LinearLayoutManager(this);
-        //recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
-        //recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewCenacExterno.setAdapter(aAdapterCE);
+        recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
+        recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewCenacExterno.setAdapter(aAdapterCE);
 
         aAdapterDespensa = new ElementoAdapter(listItemDespensa, this);
         RecyclerView.LayoutManager mLayoutManagerDespensa = new LinearLayoutManager(this);
-        //recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
-        //recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewDespensa.setAdapter(aAdapterDespensa);
+        recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
+        recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewDespensa.setAdapter(aAdapterDespensa);
 
         aAdapterLimpieza = new ElementoAdapter(listItemLimpieza, this);
         RecyclerView.LayoutManager mLayoutManagerLimpieza = new LinearLayoutManager(this);
-        //recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
-        //recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
+        recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
+        recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
 
         aAdapterConstruccion = new ElementoAdapter(listItemCostrucion, this);
         RecyclerView.LayoutManager mLayoutManagerConstruccion = new LinearLayoutManager(this);
-        //recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
-        //recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
+        recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
+        recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
+        */
         //</editor-fold>
     }
 
@@ -362,7 +375,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        btn = (MenuItem) menu.findItem(R.id.action_settings);
+        btn = menu.findItem(R.id.action_settings);
         if(isNetworkAvailable())
         {
             return false;

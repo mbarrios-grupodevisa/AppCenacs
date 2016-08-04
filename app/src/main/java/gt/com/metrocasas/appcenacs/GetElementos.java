@@ -115,11 +115,12 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
         }
         p.setVisibility(View.GONE);
         q.setVisibility(View.VISIBLE);
-        iAdapter.notifyDataSetChanged();
-        eAdapter.notifyDataSetChanged();
-        dAdapter.notifyDataSetChanged();
-        lAdapter.notifyDataSetChanged();
-        cAdapter.notifyDataSetChanged();
+
+        if(iAdapter!=null) iAdapter.notifyDataSetChanged();
+        if(eAdapter!=null) eAdapter.notifyDataSetChanged();
+        if(dAdapter!=null) dAdapter.notifyDataSetChanged();
+        if(lAdapter!=null) lAdapter.notifyDataSetChanged();
+        if(cAdapter!=null) cAdapter.notifyDataSetChanged();
 
         if(listInternos.isEmpty())
         {
