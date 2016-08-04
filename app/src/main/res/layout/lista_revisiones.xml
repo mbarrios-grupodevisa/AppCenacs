@@ -18,13 +18,16 @@
             android:layout_height="wrap_content"
             android:src="@drawable/huella"
             android:id="@+id/registro"
+            android:clickable="true"
             android:tint="@color/colorPrimaryDark"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pulse para hacer su registro..."
+            android:text="Pulse para registrarse."
             android:layout_gravity="center_horizontal"
+            android:textStyle="normal"
+            android:textSize="16sp"
             android:id="@+id/tvUpload"
             android:textColor="#000000"/>
 
