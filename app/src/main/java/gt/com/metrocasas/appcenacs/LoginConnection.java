@@ -103,7 +103,7 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
                 Intent i = new Intent(this.context, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", id);
-                bundle.putString("init", "start");
+                bundle.putString("init", "sesion");
                 i.putExtras(bundle);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.context.startActivity(i);

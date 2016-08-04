@@ -80,7 +80,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         estado = getIntent().getExtras().getString("estado");
         latitud = getIntent().getExtras().getString("latitud");
         longitud = getIntent().getExtras().getString("longitud");
-        fechaRevision = new SimpleDateFormat("dd.MM.yy hh:mm a").format(new Date());
+        fechaRevision = new SimpleDateFormat("dd MMMM yyyy hh:mm a").format(new Date());
         this.setTitle(proyecto);
 
         recyclerViewCenacInterno = (RecyclerView) findViewById(R.id.recycler_view_ci);
