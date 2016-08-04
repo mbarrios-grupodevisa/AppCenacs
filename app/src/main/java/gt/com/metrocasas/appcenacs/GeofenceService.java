@@ -47,10 +47,10 @@ public class GeofenceService extends IntentService {
             SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
 
             if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) { if(!settings.getString("estado", null).equals("Ingreso")) {
-                    sendNotification("Bienvenido a " + requestid, "No olvides hacer tu registro de entrada", "Ingreso");
+                    sendNotification("Llegando a " + requestid, "Pulsa para registrar tu entrada", "Ingreso");
                 }
             } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", null).equals("Salida")) {
-                    sendNotification("Salida de " + requestid, "No olvides hacer tu registro de salida", "Salida");
+                    sendNotification("Saliendo de " + requestid, "Pulsa para tu registrar tu salida", "Salida");
                 }
             }
         }

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -29,10 +27,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -181,8 +177,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         }
     }
 
-    private void initAdapters()
-    {
+    private void initAdapters() {
         //<editor-fold desc="Adaptadores">
         aAdapterCI = new ElementoAdapter(listItemCI, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -231,10 +226,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         progreso.setProgress(0);
         info = (TextView)findViewById(R.id.tvUpload2);
         v = findViewById(R.id.detalle);
-        final Time today = new Time(Time.getCurrentTimezone());
-        today.setToNow();
-        String fechaRegistro = today.format("%C %B %l:%M %p");
-        new IngresoElemento(this).execute(user, estado, proyecto, latitud, longitud, fechaRegistro);
+        new IngresoElemento(this).execute(user, estado, proyecto, latitud, longitud, fechaRevision);
         new GetElementos(this, aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion, p, q, progreso).execute(proyecto);
     }
 
@@ -362,12 +354,8 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        btn = (MenuItem) menu.findItem(R.id.action_settings);
-        if(isNetworkAvailable())
-        {
-            return false;
-        }
-        return true;
+        btn = menu.findItem(R.id.action_settings);
+        return !isNetworkAvailable();
     }
 
     @Override
