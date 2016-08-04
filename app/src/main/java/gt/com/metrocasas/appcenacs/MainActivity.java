@@ -17,27 +17,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    public static int FRAGMENT_VIVENTI = 1;
+    public static int FRAGMENT_CASA_ASUNCION = 2;
 
     private Toolbar toolbar;
-    public String userid, proyecto, init;
-    double longitudeNetwork, latitudeNetwork;
-    MenuItem btn ;
-    String name, last;
-
+    private String userid, init;
+    MenuItem btn_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Viventi");
-        proyecto = "Viventi";
         setSupportActionBar(toolbar);
         userid = getIntent().getExtras().getString("id");
         init = getIntent().getExtras().getString("init");
@@ -49,13 +43,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        setFragment(1);
+        setFragment(FRAGMENT_VIVENTI);
         hello();
-
     }
 
     private void hello() {
         SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+        String name, last;
         name = settings.getString("firstname", null);
         last = settings.getString("lastname", null);
         Snackbar.make(toolbar,"Bienvenido(a) " + name + " " + last, Snackbar.LENGTH_LONG).show();
@@ -64,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        btn = (MenuItem) menu.findItem(R.id.action_settings);
+        btn_update = menu.findItem(R.id.action_settings);
         return false;
     }
 
@@ -77,22 +71,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    public void openDialog() {
-        NuevoItemRevisionDialog nird = new NuevoItemRevisionDialog();
-        Bundle bundle = new Bundle();
-        bundle.putString("proyecto", proyecto);
-        bundle.putDouble("latitud",latitudeNetwork);
-        bundle.putDouble("longitud",longitudeNetwork);
-        bundle.putString("id", userid);
-        bundle.putString("init", init);
-        nird.setArguments(bundle);
-        nird.show(this.getFragmentManager(),"");
+        return id != R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -102,31 +81,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.viventi) {
-            proyecto = "Viventi";
-            Fragment fragment = new FragmentRevisionesList();
-            Bundle args = new Bundle();
-            args.putString("proyecto", "Viventi");
-            args.putString("id", userid);
-            args.putString("init", init);
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    .commit();
-            toolbar.setTitle("Viventi");
+            setFragment(FRAGMENT_VIVENTI);
         } else if (id == R.id.casa_asuncion) {
-            proyecto = "Casa Asunción";
-            Fragment fragment = new FragmentRevisionesList();
-            Bundle args = new Bundle();
-            args.putString("proyecto", "Casa Asuncion");
-            args.putString("id", userid);
-            args.putString("init", init);
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    .commit();
-            toolbar.setTitle("Casa Asunción");
+            setFragment(FRAGMENT_CASA_ASUNCION);
         }
         else if (id == R.id.logout)
         {
@@ -143,9 +100,7 @@ public class MainActivity extends AppCompatActivity
                                 editor.putString("id",null);
                                 editor.putString("firstname",null);
                                 editor.apply();
-
-                                finish();
-
+                            finish();
                             }
 
                         })
@@ -159,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setFragment(int id) {
-        if (id == 1) {
+        if (id == FRAGMENT_VIVENTI) {
             Fragment fragment = new FragmentRevisionesList();
             Bundle args = new Bundle();
             args.putString("proyecto", "Viventi");
@@ -171,7 +126,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, fragment)
                     .commit();
             toolbar.setTitle("Viventi");
-        } else if (id == 2) {
+        } else if (id == FRAGMENT_CASA_ASUNCION) {
             Fragment fragment = new FragmentRevisionesList();
             Bundle args = new Bundle();
             args.putString("proyecto", "Casa Asuncion");
