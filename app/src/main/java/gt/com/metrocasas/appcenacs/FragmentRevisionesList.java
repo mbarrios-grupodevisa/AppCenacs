@@ -42,13 +42,14 @@ import java.util.List;
 
 public class FragmentRevisionesList extends Fragment {
 
-    public String proyecto, userid;
+    public String proyecto, userid, init;
     String name, last, estado;
     public static final String GEOFENCE_VIVENTI_ID = "Viventi";
     public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
     private GoogleApiClient googleApiClient;
     public ImageView registro;
     String longitudeNetwork, latitudeNetwork;
+    boolean bandera  = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class FragmentRevisionesList extends Fragment {
         last = settings.getString("lastname", null);
         estado = settings.getString("estado", null);
         userid = getArguments().getString("id");
+        init = getArguments().getString("init");
         proyecto = getArguments().getString("proyecto");
         googleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
@@ -84,6 +86,7 @@ public class FragmentRevisionesList extends Fragment {
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 try {
                     solicitarGPS();
                 } catch (Settings.SettingNotFoundException e) {
@@ -132,8 +135,15 @@ public class FragmentRevisionesList extends Fragment {
         }
         else
         {
-            startLocationRequest();
-            startGeofenceMonitoring();
+            if(init.equals("normal"))
+            {
+                startLocationRequest();
+            }
+            else
+            {
+                startLocationRequest();
+                startGeofenceMonitoring();
+            }
         }
     }
 
@@ -153,6 +163,26 @@ public class FragmentRevisionesList extends Fragment {
                             latitudeNetwork = String.valueOf(location.getLatitude());
                             longitudeNetwork = String.valueOf(location.getLongitude());
                             Log.i("NETWORK", latitudeNetwork + " , " + longitudeNetwork);
+
+                            if(init.equals("normal") && bandera)
+                            {
+                                SharedPreferences settings = getActivity().getSharedPreferences("User",0);
+                                if(!settings.getString("estado", null).equals("Ingreso")) {
+                                    estado = "Ingreso";
+                                } else {
+                                    estado = "Salida";
+                                }
+                                bandera = false;
+                                Intent detalleRevision = new Intent(getActivity(), DetalleRevisionActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id", userid);
+                                bundle.putString("proyecto", proyecto);
+                                bundle.putString("estado", estado);
+                                bundle.putString("latitud", latitudeNetwork);
+                                bundle.putString("longitud", longitudeNetwork);
+                                detalleRevision.putExtras(bundle);
+                                startActivity(detalleRevision);
+                            }
                         }
                     });
         } catch (SecurityException se) {
@@ -163,7 +193,7 @@ public class FragmentRevisionesList extends Fragment {
         try {
             Geofence geofence1 = new Geofence.Builder()
                     .setRequestId(GEOFENCE_VIVENTI_ID)
-                    .setCircularRegion(14.6050705,-90.5164723, 100)
+                    .setCircularRegion(14.630865,-90.568863, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(1000)
                     .setLoiteringDelay(1000)
@@ -172,7 +202,7 @@ public class FragmentRevisionesList extends Fragment {
 
             Geofence geofence2 = new Geofence.Builder()
                     .setRequestId(GEOFENCE_CASA_ID)
-                    .setCircularRegion(14.592738,-90.513156, 100)
+                    .setCircularRegion(14.626525,-90.497272, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(1000)
                     .setLoiteringDelay(1000)
@@ -220,5 +250,11 @@ public class FragmentRevisionesList extends Fragment {
         ArrayList<String> geofenceids = new ArrayList<>();
         geofenceids.add(GEOFENCE_VIVENTI_ID);
         LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bandera = true;
     }
 }

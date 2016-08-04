@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private Toolbar toolbar;
-    public String userid, proyecto;
+    public String userid, proyecto, init;
     double longitudeNetwork, latitudeNetwork;
     MenuItem btn ;
     String name, last;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         proyecto = "Viventi";
         setSupportActionBar(toolbar);
         userid = getIntent().getExtras().getString("id");
+        init = getIntent().getExtras().getString("init");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         bundle.putDouble("latitud",latitudeNetwork);
         bundle.putDouble("longitud",longitudeNetwork);
         bundle.putString("id", userid);
+        bundle.putString("init", init);
         nird.setArguments(bundle);
         nird.show(this.getFragmentManager(),"");
     }
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity
             Bundle args = new Bundle();
             args.putString("proyecto", "Viventi");
             args.putString("id", userid);
+            args.putString("init", init);
             fragment.setArguments(args);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity
             Bundle args = new Bundle();
             args.putString("proyecto", "Casa Asuncion");
             args.putString("id", userid);
+            args.putString("init", init);
             fragment.setArguments(args);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()

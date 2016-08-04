@@ -1,7 +1,10 @@
 package gt.com.metrocasas.appcenacs;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -61,6 +65,8 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     private static final int VIVENTI = 3;
     private static final int CASA_ASUNCION = 4;
     public final static String BUCKET_NAME = "projectsgtimages";
+
+    ElementoAdapter aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,37 +175,52 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold desc="Adaptadores">
-        ElementoAdapter aAdapterCI = new ElementoAdapter(listItemCI, this);
+        aAdapterCI = new ElementoAdapter(listItemCI, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerViewCenacInterno.setLayoutManager(mLayoutManager);
         recyclerViewCenacInterno.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCenacInterno.setAdapter(aAdapterCI);
 
-        ElementoAdapter aAdapterCE = new ElementoAdapter(listItemCE, this);
+        aAdapterCE = new ElementoAdapter(listItemCE, this);
         RecyclerView.LayoutManager mLayoutManagerCE = new LinearLayoutManager(this);
         recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
         recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCenacExterno.setAdapter(aAdapterCE);
 
-        ElementoAdapter aAdapterDespensa = new ElementoAdapter(listItemDespensa, this);
+        aAdapterDespensa = new ElementoAdapter(listItemDespensa, this);
         RecyclerView.LayoutManager mLayoutManagerDespensa = new LinearLayoutManager(this);
         recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
         recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
         recyclerViewDespensa.setAdapter(aAdapterDespensa);
 
-        ElementoAdapter aAdapterLimpieza = new ElementoAdapter(listItemLimpieza, this);
+        aAdapterLimpieza = new ElementoAdapter(listItemLimpieza, this);
         RecyclerView.LayoutManager mLayoutManagerLimpieza = new LinearLayoutManager(this);
         recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
         recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
 
-        ElementoAdapter aAdapterConstruccion = new ElementoAdapter(listItemCostrucion, this);
+        aAdapterConstruccion = new ElementoAdapter(listItemCostrucion, this);
         RecyclerView.LayoutManager mLayoutManagerConstruccion = new LinearLayoutManager(this);
         recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
         recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
         recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
         //</editor-fold>
 
+        if(isNetworkAvailable()) {
+            hilosSecundarios();
+        } else {
+            Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
+    public void hilosSecundarios() {
         final Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         String fechaRegistro = today.format("%C %B %l:%M %p");

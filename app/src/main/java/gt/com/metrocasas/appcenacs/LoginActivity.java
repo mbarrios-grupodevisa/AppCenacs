@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent i = new Intent(this, MainActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("id", dato);
+            bundle.putString("init","normal");
             i.putExtras(bundle);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(i);

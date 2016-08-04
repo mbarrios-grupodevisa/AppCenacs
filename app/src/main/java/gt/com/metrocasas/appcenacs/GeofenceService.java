@@ -67,7 +67,8 @@ public class GeofenceService extends IntentService {
                         .putExtra("proyecto", proyecto)
                         .putExtra("estado", estado)
                         .putExtra("latitud", latitud)
-                        .putExtra("longitud", longitud),
+                        .putExtra("longitud", longitud)
+                        .putExtra("init", "notification"),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (proyecto.equals("Viventi")) {
