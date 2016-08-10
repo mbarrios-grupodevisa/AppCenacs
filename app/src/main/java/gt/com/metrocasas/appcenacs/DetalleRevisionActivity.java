@@ -73,8 +73,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_detalle_revision);
-
-
         proyecto = getIntent().getExtras().getString("proyecto");
         user = getIntent().getExtras().getString("id");
         estado = getIntent().getExtras().getString("estado");
@@ -91,14 +89,12 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         //recyclerViewConstruccion = (RecyclerView) findViewById(R.id.recycler_view_construccion);
 
         Button enviar_datos = (Button) findViewById(R.id.btn_enviar_datos);
-
         enviar_datos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 subirInformacion();
             }
         });
-
         initCardViews();
         initAdapters();
 
@@ -109,9 +105,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         }
     }
 
-    private void initCardViews()
-    {
-        //<editor-fold desc="Ocultar CardViews">
+    private void initCardViews() {
         final TextView titulo_ci = (TextView) findViewById(R.id.text_view_title_cenac_interno);
         titulo_ci.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,11 +179,9 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         });
         */
         //</editor-fold>
-
     }
 
-    private void initAdapters()
-    {
+    private void initAdapters() {
         aAdapterCI = new ElementoAdapter(listItemCI, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerViewCenacInterno.setLayoutManager(mLayoutManager);

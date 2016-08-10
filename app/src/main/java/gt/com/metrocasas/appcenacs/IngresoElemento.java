@@ -17,6 +17,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
     Context context;
     public static String ERROR = "Error en los datos, revise";
     public String estado = "";
+    public String proyecto = "";
 
     public IngresoElemento(Context context) {
         this.context = context;
@@ -28,7 +29,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
         {
             String userid = params[0];
             estado = params[1];
-            String proyecto = params[2];
+            proyecto = params[2];
             String latitud = params[3];
             String longitud = params[4];
             String fechaRegistro = params[5];
@@ -79,6 +80,7 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
             SharedPreferences settings = context.getSharedPreferences("User", 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("estado", estado);
+            editor.putString("proyecto", proyecto);
             editor.apply();
         }
     }

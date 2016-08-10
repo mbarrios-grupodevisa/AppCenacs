@@ -25,13 +25,15 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private String userid, init;
     MenuItem btn_update;
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        settings = getApplicationContext().getSharedPreferences("User",0);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(settings.getString("proyecto", null));
         setSupportActionBar(toolbar);
         userid = getIntent().getExtras().getString("id");
         init = getIntent().getExtras().getString("init");
@@ -42,9 +44,34 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        setFragment(FRAGMENT_VIVENTI);
+        if (settings.getString("proyecto", null).equals("Viventi")) {
+            setFragment(FRAGMENT_VIVENTI);
+        } else {
+            setFragment(FRAGMENT_CASA_ASUNCION);
+        }
         hello();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (settings.getString("proyecto", null).equals("Viventi")) {
+            setFragment(FRAGMENT_VIVENTI);
+        } else {
+            setFragment(FRAGMENT_CASA_ASUNCION);
+        }
+        toolbar.setTitle(settings.getString("proyecto", null));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (settings.getString("proyecto", null).equals("Viventi")) {
+            setFragment(FRAGMENT_VIVENTI);
+        } else {
+            setFragment(FRAGMENT_CASA_ASUNCION);
+        }
+        toolbar.setTitle(settings.getString("proyecto", null));
     }
 
     private void hello() {
@@ -85,8 +112,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.casa_asuncion) {
             setFragment(FRAGMENT_CASA_ASUNCION);
         }
-        else if (id == R.id.logout)
-        {
+        else if (id == R.id.logout) {
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_lock_lock)
                         .setTitle("Cerrar Sesión")

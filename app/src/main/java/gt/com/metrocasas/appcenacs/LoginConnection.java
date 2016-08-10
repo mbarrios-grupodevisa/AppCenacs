@@ -97,6 +97,7 @@ public class LoginConnection extends AsyncTask<String, Integer, String> {
                 editor.putString("firstname",name);
                 editor.putString("lastname", last);
                 editor.putString("estado", "Salida");
+                editor.putString("proyecto", "Viventi");
                 editor.putString("service", "Stop");
                 editor.apply();
 

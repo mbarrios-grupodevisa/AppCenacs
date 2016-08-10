@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,6 +39,7 @@ public class FragmentRevisionesList extends Fragment {
     public ImageView registro;
     String longitudeNetwork, latitudeNetwork, service;
     boolean bandera  = true;
+    TextView estad;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +53,13 @@ public class FragmentRevisionesList extends Fragment {
         userid = getArguments().getString("id");
         init = getArguments().getString("init");
         proyecto = getArguments().getString("proyecto");
+        estad = (TextView)partenView.findViewById(R.id.txtIngreso);
+        if (estado.equals("Salida")) {
+            estad.setText("Pulse para registrar su ingreso");
+        } else {
+            estad.setText("Pulse para registrar su salida");
+        }
+
         googleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -91,6 +100,11 @@ public class FragmentRevisionesList extends Fragment {
     public void onStart() {
         super.onStart();
         googleApiClient.connect();
+        if (estado.equals("Salida")) {
+            estad.setText("Pulse para registrar su ingreso");
+        } else {
+            estad.setText("Pulse para registrar su salida");
+        }
     }
 
     @Override
@@ -251,5 +265,10 @@ public class FragmentRevisionesList extends Fragment {
     public void onResume() {
         super.onResume();
         bandera = true;
+        if (estado.equals("Salida")) {
+            estad.setText("Pulse para registrar su ingreso");
+        } else {
+            estad.setText("Pulse para registrar su salida");
+        }
     }
 }
