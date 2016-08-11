@@ -21,7 +21,7 @@ public class GeofenceService extends IntentService {
     NotificationManager notificationManager;
     Notification myNotification;
     private static final int MY_NOTIFICATION_ID = 1;
-    String user, proyecto, name, latitud, longitud;
+    String user, proyecto, latitud, longitud;
 
     public GeofenceService() {
         super(TAG);
@@ -70,10 +70,6 @@ public class GeofenceService extends IntentService {
                         .putExtra("latitud", latitud)
                         .putExtra("longitud", longitud)
                         .putExtra("init", "notification"),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        PendingIntent contentIntent2 = PendingIntent.getActivity(this, 0,
-                new Intent(this, LoginActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (proyecto.equals("Viventi")) {

@@ -1,7 +1,6 @@
 package gt.com.metrocasas.appcenacs;
 
 import android.app.Fragment;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,24 +9,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
@@ -35,8 +24,6 @@ public class FragmentRevisionesList extends Fragment {
 
     public String proyecto, userid, init;
     String name, last, estado;
-    public static final String GEOFENCE_VIVENTI_ID = "Viventi";
-    public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
     private GoogleApiClient googleApiClient;
     public ImageView registro;
     String longitudeNetwork, latitudeNetwork, service;
@@ -143,7 +130,6 @@ public class FragmentRevisionesList extends Fragment {
                         public void onLocationChanged(Location location) {
                             latitudeNetwork = String.valueOf(location.getLatitude());
                             longitudeNetwork = String.valueOf(location.getLongitude());
-                            //Log.i("NETWORK", latitudeNetwork + " , " + longitudeNetwork);
 
                             if(init.equals("normal") && bandera) {
                                 SharedPreferences settings = getActivity().getSharedPreferences("User",0);
@@ -167,58 +153,6 @@ public class FragmentRevisionesList extends Fragment {
                     });
         } catch (SecurityException se) {
             //Log.i("ERROR", se.toString());
-        }
-    }
-
-    public void startGeofenceMonitoring() {
-        try {
-            Geofence geofence1 = new Geofence.Builder()
-                    .setRequestId(GEOFENCE_VIVENTI_ID)
-                    .setCircularRegion(14.630865,-90.568863, 100)
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .setNotificationResponsiveness(1000)
-                    .setLoiteringDelay(1000)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
-                    .build();
-
-            Geofence geofence2 = new Geofence.Builder()
-                    .setRequestId(GEOFENCE_CASA_ID)
-                    .setCircularRegion(14.626525,-90.497272, 100)
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .setNotificationResponsiveness(1000)
-                    .setLoiteringDelay(1000)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
-                    .build();
-
-            GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
-                    .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                    .addGeofence(geofence1)
-                    .addGeofence(geofence2)
-                    .build();
-
-            Intent intent = new Intent(getActivity(), GeofenceService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            if (!googleApiClient.isConnected()) {
-                Toast.makeText(getActivity(), "GOOGLE API NO CONECTADA", Toast.LENGTH_SHORT).show();
-            } else {
-                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                LocationServices.GeofencingApi.addGeofences(googleApiClient, geofencingRequest, pendingIntent)
-                        .setResultCallback(new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(@NonNull Status status) {
-                                if (status.isSuccess()) {
-                                    Toast.makeText(getActivity(), "GEOFENCE AÑADIDO", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getActivity(), "ACTIVE GPS", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        } catch (Exception e) {
-            //Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
