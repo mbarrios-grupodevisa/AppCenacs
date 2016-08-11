@@ -3,6 +3,7 @@ package gt.com.metrocasas.appcenacs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -40,19 +41,10 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
     private List<Elemento> listItemCI = new ArrayList<>();
     private RecyclerView recyclerViewCenacInterno;
-
     private List<Elemento> listItemCE = new ArrayList<>();
-    //private RecyclerView recyclerViewCenacExterno;
-
-
     private List<Elemento> listItemDespensa = new ArrayList<>();
-    //private RecyclerView recyclerViewDespensa;
-
     private List<Elemento> listItemLimpieza = new ArrayList<>();
-    //private RecyclerView recyclerViewLimpieza;
-
     private List<Elemento> listItemCostrucion = new ArrayList<>();
-    //private RecyclerView recyclerViewConstruccion;
 
     private String proyecto;
     private String user;
@@ -92,7 +84,11 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         enviar_datos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                subirInformacion();
+                if (isNetworkAvailable()) {
+                    subirInformacion();
+                } else {
+                    Toast.makeText(getApplication(), "Conéctate a la red y presiona recargar", Toast.LENGTH_LONG).show();
+                }
             }
         });
         initCardViews();
@@ -219,9 +215,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager)this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager
-                .getActiveNetworkInfo();
-        return activeNetworkInfo != null;
+        return connectivityManager.isActiveNetworkMetered();
     }
 
     public void hilosSecundarios() {

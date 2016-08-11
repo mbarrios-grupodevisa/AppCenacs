@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import java.util.List;
@@ -33,26 +35,29 @@ public class GeofenceService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        user = intent.getStringExtra("userid");
-        name = intent.getStringExtra("nombre");
-        latitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLatitude());
-        longitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLongitude());
-        if(!geofencingEvent.hasError()) {
-            int transition = geofencingEvent.getGeofenceTransition();
-            List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
-            Geofence geofence = geofences.get(0);
-            String requestid = geofence.getRequestId();
-            proyecto = requestid;
+        try {
+            GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
             SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
+            user = settings.getString("id", null);
+            latitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLatitude());
+            longitud = String.valueOf(geofencingEvent.getTriggeringLocation().getLongitude());
+            if(!geofencingEvent.hasError()) {
+                int transition = geofencingEvent.getGeofenceTransition();
+                List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
+                Geofence geofence = geofences.get(0);
+                String requestid = geofence.getRequestId();
+                proyecto = requestid;
 
-            if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) { if(!settings.getString("estado", null).equals("Ingreso")) {
+                if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) { if(!settings.getString("estado", null).equals("Ingreso")) {
                     sendNotification("Llegando a " + requestid, "Pulsa para registrar tu entrada", "Ingreso");
                 }
-            } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", null).equals("Salida")) {
+                } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", null).equals("Salida")) {
                     sendNotification("Saliendo de " + requestid, "Pulsa para tu registrar tu salida", "Salida");
                 }
+                }
             }
+        } catch (Exception e) {
+            Toast.makeText(this, "SERVICE: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -65,6 +70,10 @@ public class GeofenceService extends IntentService {
                         .putExtra("latitud", latitud)
                         .putExtra("longitud", longitud)
                         .putExtra("init", "notification"),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent contentIntent2 = PendingIntent.getActivity(this, 0,
+                new Intent(this, LoginActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (proyecto.equals("Viventi")) {

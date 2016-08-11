@@ -20,6 +20,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText user, pass;
     ProgressBar progress;
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences settings = getSharedPreferences("User",0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("servicio","Detenido");
+        editor.apply();
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -51,9 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager)this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager
-                .getActiveNetworkInfo();
-        return activeNetworkInfo != null;
+        return connectivityManager.isActiveNetworkMetered();
     }
 
     @Override

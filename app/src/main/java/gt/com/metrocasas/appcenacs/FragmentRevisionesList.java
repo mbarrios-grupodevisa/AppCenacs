@@ -2,11 +2,13 @@ package gt.com.metrocasas.appcenacs;
 
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -84,12 +86,7 @@ public class FragmentRevisionesList extends Fragment {
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                try {
                     solicitarGPS();
-                } catch (Settings.SettingNotFoundException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
@@ -113,9 +110,9 @@ public class FragmentRevisionesList extends Fragment {
         googleApiClient.disconnect();
     }
 
-    public void solicitarGPS() throws Settings.SettingNotFoundException {
-
-        if (Settings.Secure.getInt(getActivity().getContentResolver(), Settings.Secure.LOCATION_MODE) == 0) {
+    public void solicitarGPS() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Activar GPS");
             builder.setMessage("Se necesita tener activo el GPS para usar esta función.");
@@ -136,10 +133,8 @@ public class FragmentRevisionesList extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
-        else
-        {
-            if(service.equals("Stop"))
-            {
+        else {
+            if(service.equals("Stop")) {
                 startLocationRequest();
                 startGeofenceMonitoring();
                 SharedPreferences settings = getActivity().getSharedPreferences("User",0);
@@ -148,8 +143,7 @@ public class FragmentRevisionesList extends Fragment {
                 service = "Start";
                 editor.apply();
             }
-            else
-            {
+            else {
                 startLocationRequest();
             }
         }
@@ -170,10 +164,9 @@ public class FragmentRevisionesList extends Fragment {
                         public void onLocationChanged(Location location) {
                             latitudeNetwork = String.valueOf(location.getLatitude());
                             longitudeNetwork = String.valueOf(location.getLongitude());
-                            Log.i("NETWORK", latitudeNetwork + " , " + longitudeNetwork);
+                            //Log.i("NETWORK", latitudeNetwork + " , " + longitudeNetwork);
 
-                            if(init.equals("normal") && bandera)
-                            {
+                            if(init.equals("normal") && bandera) {
                                 SharedPreferences settings = getActivity().getSharedPreferences("User",0);
                                 if(!settings.getString("estado", null).equals("Ingreso")) {
                                     estado = "Ingreso";
@@ -194,7 +187,7 @@ public class FragmentRevisionesList extends Fragment {
                         }
                     });
         } catch (SecurityException se) {
-            Log.i("ERROR", se.toString());
+            //Log.i("ERROR", se.toString());
         }
     }
 
@@ -225,17 +218,13 @@ public class FragmentRevisionesList extends Fragment {
                     .build();
 
             Intent intent = new Intent(getActivity(), GeofenceService.class);
-            intent.putExtra("userid", userid);
-            intent.putExtra("nombre", name);
-            intent.putExtra("latitud", latitudeNetwork);
-            intent.putExtra("longitud", longitudeNetwork);
             PendingIntent pendingIntent = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (!googleApiClient.isConnected()) {
                 Toast.makeText(getActivity(), "GOOGLE API NO CONECTADA", Toast.LENGTH_SHORT).show();
             } else {
                 if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "NO HAY PERMISOS", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 LocationServices.GeofencingApi.addGeofences(googleApiClient, geofencingRequest, pendingIntent)
                         .setResultCallback(new ResultCallback<Status>() {
@@ -250,16 +239,9 @@ public class FragmentRevisionesList extends Fragment {
                         });
             }
         } catch (Exception e) {
-            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
-
-    /*public void stopGeofenceMonitoring () {
-        Toast.makeText(getActivity(), "ELIMINANDO GEOFENCE", Toast.LENGTH_SHORT).show();
-        ArrayList<String> geofenceids = new ArrayList<>();
-        geofenceids.add(GEOFENCE_VIVENTI_ID);
-        LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
-    }*/
 
     @Override
     public void onResume() {
