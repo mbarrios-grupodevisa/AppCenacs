@@ -62,26 +62,6 @@ public class FragmentRevisionesList extends Fragment {
             estad.setText("Pulse para registrar su salida");
         }
 
-        googleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                        //Toast.makeText(getApplicationContext(), "CONECTADA", Toast.LENGTH_LONG).show();
-                    }
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                        //Toast.makeText(getApplicationContext(), "SUSPENDIDO", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getActivity(), "FAIL", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .build();
-
         registro = (ImageView)partenView.findViewById(R.id.registro);
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +76,6 @@ public class FragmentRevisionesList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        googleApiClient.connect();
         if (estado.equals("Salida")) {
             estad.setText("Pulse para registrar su ingreso");
         } else {
@@ -107,7 +86,6 @@ public class FragmentRevisionesList extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        googleApiClient.disconnect();
     }
 
     public void solicitarGPS() {
@@ -134,9 +112,10 @@ public class FragmentRevisionesList extends Fragment {
             alert.show();
         }
         else {
+            googleApiClient = LocationProviderReceiver.googleApiClient;
+            googleApiClient.connect();
             if(service.equals("Stop")) {
                 startLocationRequest();
-                startGeofenceMonitoring();
                 SharedPreferences settings = getActivity().getSharedPreferences("User",0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("service","Start");

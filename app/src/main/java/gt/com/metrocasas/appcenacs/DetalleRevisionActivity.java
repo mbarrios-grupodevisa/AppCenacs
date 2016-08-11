@@ -41,10 +41,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
 
     private List<Elemento> listItemCI = new ArrayList<>();
     private RecyclerView recyclerViewCenacInterno;
-    private List<Elemento> listItemCE = new ArrayList<>();
-    private List<Elemento> listItemDespensa = new ArrayList<>();
-    private List<Elemento> listItemLimpieza = new ArrayList<>();
-    private List<Elemento> listItemCostrucion = new ArrayList<>();
 
     private String proyecto;
     private String user;
@@ -59,7 +55,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     private static final int CASA_ASUNCION = 4;
     public final static String BUCKET_NAME = "projectsgtimages";
 
-    ElementoAdapter aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion;
+    ElementoAdapter aAdapterCI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +70,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         this.setTitle(proyecto);
 
         recyclerViewCenacInterno = (RecyclerView) findViewById(R.id.recycler_view_ci);
-
-        //recyclerViewCenacExterno = (RecyclerView) findViewById(R.id.recycler_view_ce);
-        //recyclerViewDespensa = (RecyclerView) findViewById(R.id.recycler_view_despensa);
-        //recyclerViewLimpieza = (RecyclerView) findViewById(R.id.recycler_view_limpieza);
-        //recyclerViewConstruccion = (RecyclerView) findViewById(R.id.recycler_view_construccion);
 
         Button enviar_datos = (Button) findViewById(R.id.btn_enviar_datos);
         enviar_datos.setOnClickListener(new View.OnClickListener() {
@@ -115,66 +106,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //<editor-fold desc="CardViews sin Utilizar">
-        /*final TextView titulo_ce = (TextView) findViewById(R.id.text_view_title_cenac_externo);
-        titulo_ce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(recyclerViewCenacExterno.getVisibility() == View.VISIBLE) {
-                    recyclerViewCenacExterno.setVisibility(View.GONE);
-                    titulo_ce.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_down,0);
-                }else {
-                    titulo_ce.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_up,0);
-                    recyclerViewCenacExterno.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
-
-        final TextView titulo_c = (TextView) findViewById(R.id.text_view_title_construccion);
-        titulo_c.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(recyclerViewConstruccion.getVisibility() == View.VISIBLE) {
-                    recyclerViewConstruccion.setVisibility(View.GONE);
-                    titulo_c.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_down,0);
-                }else {
-                    titulo_c.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_up,0);
-                    recyclerViewConstruccion.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        final TextView titulo_d = (TextView) findViewById(R.id.text_view_title_despensa);
-        titulo_d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(recyclerViewDespensa.getVisibility() == View.VISIBLE) {
-                    recyclerViewDespensa.setVisibility(View.GONE);
-                    titulo_d.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_down,0);
-                }else {
-                    titulo_d.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_up,0);
-                    recyclerViewDespensa.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        final TextView titulo_l = (TextView) findViewById(R.id.text_view_title_limpieza);
-        titulo_l.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(recyclerViewLimpieza.getVisibility() == View.VISIBLE) {
-                    recyclerViewLimpieza.setVisibility(View.GONE);
-                    titulo_l.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_down,0);
-                }else {
-                    titulo_l.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.arrow_up,0);
-                    recyclerViewLimpieza.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        */
-        //</editor-fold>
     }
 
     private void initAdapters() {
@@ -183,34 +114,6 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         recyclerViewCenacInterno.setLayoutManager(mLayoutManager);
         recyclerViewCenacInterno.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCenacInterno.setAdapter(aAdapterCI);
-
-        //<editor-fold desc="Adaptadores No Utilizados">
-        /*
-        aAdapterCE = new ElementoAdapter(listItemCE, this);
-        RecyclerView.LayoutManager mLayoutManagerCE = new LinearLayoutManager(this);
-        recyclerViewCenacExterno.setLayoutManager(mLayoutManagerCE);
-        recyclerViewCenacExterno.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewCenacExterno.setAdapter(aAdapterCE);
-
-        aAdapterDespensa = new ElementoAdapter(listItemDespensa, this);
-        RecyclerView.LayoutManager mLayoutManagerDespensa = new LinearLayoutManager(this);
-        recyclerViewDespensa.setLayoutManager(mLayoutManagerDespensa);
-        recyclerViewDespensa.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewDespensa.setAdapter(aAdapterDespensa);
-
-        aAdapterLimpieza = new ElementoAdapter(listItemLimpieza, this);
-        RecyclerView.LayoutManager mLayoutManagerLimpieza = new LinearLayoutManager(this);
-        recyclerViewLimpieza.setLayoutManager(mLayoutManagerLimpieza);
-        recyclerViewLimpieza.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewLimpieza.setAdapter(aAdapterLimpieza);
-
-        aAdapterConstruccion = new ElementoAdapter(listItemCostrucion, this);
-        RecyclerView.LayoutManager mLayoutManagerConstruccion = new LinearLayoutManager(this);
-        recyclerViewConstruccion.setLayoutManager(mLayoutManagerConstruccion);
-        recyclerViewConstruccion.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewConstruccion.setAdapter(aAdapterConstruccion);
-        */
-        //</editor-fold>
     }
 
     public boolean isNetworkAvailable() {
@@ -227,7 +130,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         info = (TextView)findViewById(R.id.tvUpload2);
         v = findViewById(R.id.detalle);
         new IngresoElemento(this).execute(user, estado, proyecto, latitud, longitud, fechaRevision);
-        new GetElementos(this, aAdapterCI, aAdapterCE, aAdapterDespensa, aAdapterLimpieza, aAdapterConstruccion, p, q, progreso).execute(proyecto);
+        new GetElementos(this, aAdapterCI, p, q, progreso).execute(proyecto);
     }
 
     public void subirInformacion() {
@@ -315,20 +218,12 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     }
 
     public void limpiarCampos() {
-        listItemCE = new ArrayList<>();
         listItemCI = new ArrayList<>();
-        listItemDespensa = new ArrayList<>();
-        listItemLimpieza = new ArrayList<>();
-        listItemCostrucion = new ArrayList<>();
     }
 
     public List<Elemento> getListElements() {
         List<Elemento> list = new ArrayList<>();
         list.addAll(listItemCI);
-        list.addAll(listItemCE);
-        list.addAll(listItemDespensa);
-        list.addAll(listItemLimpieza);
-        list.addAll(listItemCostrucion);
         return list;
     }
 

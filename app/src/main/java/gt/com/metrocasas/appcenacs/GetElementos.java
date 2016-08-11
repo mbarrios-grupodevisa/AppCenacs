@@ -22,31 +22,15 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
 
     Context context;
     List<Elemento> listInternos;
-    List<Elemento> listExternos;
-    List<Elemento> listDespensa;
-    List<Elemento> listLimpieza;
-    List<Elemento> listConstruccion;
     ElementoAdapter iAdapter;
-    ElementoAdapter eAdapter;
-    ElementoAdapter dAdapter;
-    ElementoAdapter lAdapter;
-    ElementoAdapter cAdapter;
     LinearLayout p, q;
     ProgressBar progreso;
     public static String ERROR = "No se encontraron elementos de este proyecto";
 
-    public GetElementos(Context context, ElementoAdapter iAdapter, ElementoAdapter eAdapter, ElementoAdapter dAdapter, ElementoAdapter lAdapter, ElementoAdapter cAdapter,  LinearLayout p, LinearLayout q, ProgressBar progreso) {
+    public GetElementos(Context context, ElementoAdapter iAdapter, LinearLayout p, LinearLayout q, ProgressBar progreso) {
         this.context = context;
         this.iAdapter = iAdapter;
-        this.eAdapter = eAdapter;
-        this.dAdapter = dAdapter;
-        this.lAdapter = lAdapter;
-        this.cAdapter = cAdapter;
         if(iAdapter!=null) this.listInternos = iAdapter.getListElemento();
-        if(eAdapter!=null) this.listExternos = eAdapter.getListElemento();
-        if(dAdapter!=null) this.listDespensa = dAdapter.getListElemento();
-        if(lAdapter!=null) this.listLimpieza = lAdapter.getListElemento();
-        if(cAdapter!=null) this.listConstruccion = cAdapter.getListElemento();
         this.p = p;
         this.q = q;
         this.progreso = progreso;
@@ -117,32 +101,10 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
         q.setVisibility(View.VISIBLE);
 
         if(iAdapter!=null) iAdapter.notifyDataSetChanged();
-        if(eAdapter!=null) eAdapter.notifyDataSetChanged();
-        if(dAdapter!=null) dAdapter.notifyDataSetChanged();
-        if(lAdapter!=null) lAdapter.notifyDataSetChanged();
-        if(cAdapter!=null) cAdapter.notifyDataSetChanged();
 
         if(listInternos.isEmpty())
         {
             iAdapter.hidenCardViewCenacInterno();
         }
-        /*
-        if(listExternos.isEmpty())
-        {
-            cAdapter.hidenCardViewCenacExterno();
-        }
-        if(listLimpieza.isEmpty())
-        {
-            cAdapter.hidenCardViewLimpieza();
-        }
-        if(listDespensa.isEmpty())
-        {
-            cAdapter.hidenCardViewDespensa();
-        }
-        if(listConstruccion.isEmpty())
-        {
-           cAdapter.hidenCardViewConstruccion();
-        }
-        */
     }
 }

@@ -137,7 +137,7 @@ public class LocationProviderReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Detenida Localización de Proyectos", Toast.LENGTH_LONG).show();
             googleApiClient.disconnect();
         } catch (Exception e) {
-            Toast.makeText(context, "BROADCAST: " + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Detenida Localización de Proyectos", Toast.LENGTH_LONG).show();
         }
     }
 }
