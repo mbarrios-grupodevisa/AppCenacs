@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -212,6 +212,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         databack.putExtra("fecha",fechaRevision);
         if(proyecto.equals("Viventi")) setResult(VIVENTI,databack);
         if(proyecto.equals("Casa Asunción")) setResult(CASA_ASUNCION,databack);
+        if(proyecto.equals("Metrocasas")) setResult(CASA_ASUNCION,databack);
         new IngresoRevision(getApplicationContext(), v, p, q, progreso, this, info).execute(user, proyecto, fechaRevision, json);
     }
 

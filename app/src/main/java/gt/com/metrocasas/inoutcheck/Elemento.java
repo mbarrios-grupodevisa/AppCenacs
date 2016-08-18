@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

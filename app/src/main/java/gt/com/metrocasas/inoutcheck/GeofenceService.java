@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -72,28 +72,46 @@ public class GeofenceService extends IntentService {
                         .putExtra("init", "notification"),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (proyecto.equals("Viventi")) {
-            myNotification = new Notification.Builder(getApplicationContext())
-                    .setContentTitle(titulo)
-                    .setContentText(msg)
-                    .setWhen(System.currentTimeMillis())
-                    .setDefaults(Notification.DEFAULT_SOUND)
-                    .setAutoCancel(true)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.viventi))
-                    .setSmallIcon(R.drawable.viventi)
-                    .setContentIntent(contentIntent)
-                    .build();
-        } else {
-            myNotification = new Notification.Builder(getApplicationContext())
-                    .setContentTitle(titulo)
-                    .setContentText(msg)
-                    .setWhen(System.currentTimeMillis())
-                    .setDefaults(Notification.DEFAULT_SOUND)
-                    .setAutoCancel(true)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.casa))
-                    .setSmallIcon(R.drawable.casa)
-                    .setContentIntent(contentIntent)
-                    .build();
+        switch (proyecto) {
+            case LocationProviderReceiver.GEOFENCE_VIVENTI_ID:
+                myNotification = new Notification.Builder(getApplicationContext())
+                        .setContentTitle(titulo)
+                        .setContentText(msg)
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setLights(0xffffffff, 500, 1500)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.viventi))
+                        .setSmallIcon(R.drawable.viventi)
+                        .setContentIntent(contentIntent)
+                        .build();
+                break;
+            case LocationProviderReceiver.GEOFENCE_CASA_ID:
+                myNotification = new Notification.Builder(getApplicationContext())
+                        .setContentTitle(titulo)
+                        .setContentText(msg)
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setLights(0xffffffff, 500, 1500)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.casa))
+                        .setSmallIcon(R.drawable.casa)
+                        .setContentIntent(contentIntent)
+                        .build();
+                break;
+            case LocationProviderReceiver.GEOFENCE_METROCASAS_ID:
+                myNotification = new Notification.Builder(getApplicationContext())
+                        .setContentTitle(titulo)
+                        .setContentText(msg)
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setLights(0xffffffff, 500, 1500)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.metrocasas))
+                        .setSmallIcon(R.drawable.metrocasas)
+                        .setContentIntent(contentIntent)
+                        .build();
+                break;
         }
         notificationManager.notify(MY_NOTIFICATION_ID, myNotification);
     }

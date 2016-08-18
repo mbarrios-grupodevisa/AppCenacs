@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -27,6 +27,7 @@ public class LocationProviderReceiver extends BroadcastReceiver {
 
     public static final String GEOFENCE_VIVENTI_ID = "Viventi";
     public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
+    public static final String GEOFENCE_METROCASAS_ID = "Metrocasas";
     public static GoogleApiClient googleApiClient;
 
     public LocationProviderReceiver() {
@@ -74,7 +75,7 @@ public class LocationProviderReceiver extends BroadcastReceiver {
         }
     }
 
-    public void startGeofenceMonitoring(final Context context) {
+    public static void startGeofenceMonitoring(final Context context) {
         try {
             Geofence geofence1 = new Geofence.Builder()
                     .setRequestId(GEOFENCE_VIVENTI_ID)
@@ -92,10 +93,19 @@ public class LocationProviderReceiver extends BroadcastReceiver {
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build();
 
+            Geofence geofence3 = new Geofence.Builder()
+                    .setRequestId(GEOFENCE_METROCASAS_ID)
+                    .setCircularRegion(14.605549,-90.516273, 100)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setNotificationResponsiveness(0)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build();
+
             GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
                     .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                     .addGeofence(geofence1)
                     .addGeofence(geofence2)
+                    .addGeofence(geofence3)
                     .build();
 
             Intent intent = new Intent(context, GeofenceService.class);

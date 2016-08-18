@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity
 
     public static int FRAGMENT_VIVENTI = 1;
     public static int FRAGMENT_CASA_ASUNCION = 2;
+    public static int FRAGMENT_METROCASAS = 3;
 
     private Toolbar toolbar;
     private String userid, init;
@@ -46,8 +47,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         if (settings.getString("proyecto", null).equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else {
+        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
+        } else{
+            setFragment(FRAGMENT_METROCASAS);
         }
         hello();
     }
@@ -57,8 +60,10 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         if (settings.getString("proyecto", null).equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else {
+        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
+        } else{
+            setFragment(FRAGMENT_METROCASAS);
         }
         toolbar.setTitle(settings.getString("proyecto", null));
     }
@@ -68,8 +73,10 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if (settings.getString("proyecto", null).equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else {
+        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
+        } else{
+            setFragment(FRAGMENT_METROCASAS);
         }
         toolbar.setTitle(settings.getString("proyecto", null));
     }
@@ -111,6 +118,8 @@ public class MainActivity extends AppCompatActivity
             setFragment(FRAGMENT_VIVENTI);
         } else if (id == R.id.casa_asuncion) {
             setFragment(FRAGMENT_CASA_ASUNCION);
+        } else if (id == R.id.metrocasas) {
+            setFragment(FRAGMENT_METROCASAS);
         }
         else if (id == R.id.logout) {
                 new AlertDialog.Builder(this)
@@ -165,6 +174,18 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, fragment)
                     .commit();
             toolbar.setTitle("Casa Asunción");
+        } else if (id == FRAGMENT_METROCASAS) {
+            Fragment fragment = new FragmentRevisionesList();
+            Bundle args = new Bundle();
+            args.putString("proyecto", "Metrocasas");
+            args.putString("id", userid);
+            args.putString("init", init);
+            fragment.setArguments(args);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+            toolbar.setTitle("Metrocasas");
         }
     }
 

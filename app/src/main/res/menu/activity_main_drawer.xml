@@ -10,6 +10,10 @@
             android:id="@+id/casa_asuncion"
             android:title="Casa Asunción"
             android:icon="@drawable/casa"/>
+        <item
+            android:id="@+id/metrocasas"
+            android:title="Metrocasas"
+            android:icon="@drawable/metrocasas"/>
     </group>
 
     <item android:title="">

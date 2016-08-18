@@ -10,11 +10,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "gt.com.metrocasas.appcenacs"
+        applicationId "gt.com.metrocasas.inoutcheck"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 5
-        versionName "2.2.1"
+        versionCode 7
+        versionName "2.2.3"
         multiDexEnabled true
     }
     buildTypes {

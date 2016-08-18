@@ -1,4 +1,4 @@
-package gt.com.metrocasas.appcenacs;
+package gt.com.metrocasas.inoutcheck;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -16,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -100,18 +105,62 @@ public class FragmentRevisionesList extends Fragment {
         }
         else {
             googleApiClient = LocationProviderReceiver.googleApiClient;
-            googleApiClient.connect();
-            if(service.equals("Stop")) {
-                startLocationRequest();
-                SharedPreferences settings = getActivity().getSharedPreferences("User",0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("service","Start");
-                service = "Start";
-                editor.apply();
+
+            if(googleApiClient == null)
+            {
+                googleApiClient = new GoogleApiClient.Builder(this.getActivity())
+                        .addApi(LocationServices.API)
+                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(@Nullable Bundle bundle) {
+                                //Toast.makeText(context, "CONECTADA", Toast.LENGTH_SHORT).show();
+                                SharedPreferences settings = getActivity().getSharedPreferences("User",0);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putString("servicio", "Encendido");
+                                editor.apply();
+                                LocationProviderReceiver.startGeofenceMonitoring(getActivity());
+                                if(service.equals("Stop")) {
+                                    startLocationRequest();
+
+                                    SharedPreferences.Editor editor2 = settings.edit();
+                                    editor2.putString("service","Start");
+                                    service = "Start";
+                                    editor2.apply();
+                                }
+                                else {
+                                    startLocationRequest();
+                                }
+                            }
+
+                            @Override
+                            public void onConnectionSuspended(int i) {
+
+                            }
+                        })
+                        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                            @Override
+                            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                                Toast.makeText(getActivity(), "FAIL", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build();
+                googleApiClient.connect();
             }
             else {
-                startLocationRequest();
+                googleApiClient.connect();
+                if(service.equals("Stop")) {
+                    startLocationRequest();
+                    SharedPreferences settings = getActivity().getSharedPreferences("User",0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("service","Start");
+                    service = "Start";
+                    editor.apply();
+                }
+                else {
+                    startLocationRequest();
+                }
             }
+
         }
     }
 
