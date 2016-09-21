@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -14,15 +12,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-public class IngresoElemento extends AsyncTask<String, Integer, String> {
+class IngresoElemento extends AsyncTask<String, Integer, String> {
 
-    View v;
+    private View v;
     Context context;
-    public static String ERROR = "Error en los datos, revise";
-    public String estado = "";
+    private String estado = "";
     public String proyecto = "";
 
-    public IngresoElemento(Context context, View v) {
+    IngresoElemento(Context context, View v) {
         this.context = context;
         this.v = v;
     }
@@ -64,6 +61,8 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
             return sb.toString();
         }
         catch(Exception e)  {
+            String ERROR;
+            ERROR = "Error en los datos, revise";
             return ERROR;
         }
     }

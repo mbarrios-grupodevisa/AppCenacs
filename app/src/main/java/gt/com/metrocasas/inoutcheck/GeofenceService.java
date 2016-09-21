@@ -51,10 +51,10 @@ public class GeofenceService extends IntentService {
                 editor.putString("proyecto", proyecto);
                 editor.apply();
 
-                if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) { if(!settings.getString("estado", null).equals("Ingreso")) {
-                    sendNotification("Llegando a " + requestid, "Pulsa para registrarte tu entrada", "Ingreso");
+                if(transition == Geofence.GEOFENCE_TRANSITION_ENTER) { if(!settings.getString("estado", "").equals("Ingreso")) {
+                    sendNotification("Llegando a " + requestid, "Pulsa para registrar tu entrada", "Ingreso");
                 }
-                } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", null).equals("Salida")) {
+                } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) { if(!settings.getString("estado", "").equals("Salida")) {
                     sendNotification("Saliendo de " + requestid, "Pulsa para tu registrar tu salida", "Salida");
                 }
                 }

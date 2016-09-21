@@ -1,8 +1,12 @@
 package gt.com.metrocasas.inoutcheck;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,8 +17,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity
             setFragment(FRAGMENT_METROCASAS);
         }
         hello();
+        setAutomaticCheckOut();
     }
 
     @Override
@@ -87,6 +95,16 @@ public class MainActivity extends AppCompatActivity
         name = settings.getString("firstname", null);
         last = settings.getString("lastname", null);
         Snackbar.make(toolbar,"Bienvenido(a) " + name + " " + last, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void setAutomaticCheckOut() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.MINUTE, 30);
+        Intent intentAlarm = new Intent(this, CheckTimeReceiver.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, PendingIntent.getBroadcast(this, 0, intentAlarm, 0));
     }
 
     @Override

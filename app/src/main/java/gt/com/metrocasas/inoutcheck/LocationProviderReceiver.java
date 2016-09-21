@@ -40,7 +40,7 @@ public class LocationProviderReceiver extends BroadcastReceiver {
         final SharedPreferences settings = context.getSharedPreferences("User",0);
         if (intent.getAction().equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                if (settings.getString("servicio", null).equals("Detenido")) {
+                if (settings.getString("servicio", "").equals("Detenido")) {
                     googleApiClient = new GoogleApiClient.Builder(context)
                             .addApi(LocationServices.API)
                             .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
