@@ -3,6 +3,8 @@ package gt.com.metrocasas.inoutcheck;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -14,13 +16,15 @@ import java.net.URLEncoder;
 
 public class IngresoElemento extends AsyncTask<String, Integer, String> {
 
+    View v;
     Context context;
     public static String ERROR = "Error en los datos, revise";
     public String estado = "";
     public String proyecto = "";
 
-    public IngresoElemento(Context context) {
+    public IngresoElemento(Context context, View v) {
         this.context = context;
+        this.v = v;
     }
 
     @Override
@@ -75,7 +79,14 @@ public class IngresoElemento extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+        Snackbar.make(v, "Registro de " + estado + " Correcto", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Aceptar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .show();
         if (result.equals("Registro Correcto")) {
             SharedPreferences settings = context.getSharedPreferences("User", 0);
             SharedPreferences.Editor editor = settings.edit();

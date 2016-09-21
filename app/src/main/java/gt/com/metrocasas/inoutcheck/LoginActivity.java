@@ -60,11 +60,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
-        //SharedPreferences.Editor editor = editor = settings.edit();
-        //editor.putInt("homeScore", YOUR_HOME_SCORE);
-        //editor.apply();
-
         SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
         String dato = settings.getString("id",null);
         if(dato!=null)

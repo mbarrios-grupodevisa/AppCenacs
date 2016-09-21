@@ -48,12 +48,6 @@ public class FragmentRevisionesList extends Fragment {
         init = getArguments().getString("init");
         proyecto = getArguments().getString("proyecto");
         estad = (TextView)partenView.findViewById(R.id.txtIngreso);
-        if (estado.equals("Salida")) {
-            estad.setText("Pulse para registrar su ingreso");
-        } else {
-            estad.setText("Pulse para registrar su salida");
-        }
-
         registro = (ImageView)partenView.findViewById(R.id.registro);
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +62,6 @@ public class FragmentRevisionesList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (estado.equals("Salida")) {
-            estad.setText("Pulse para registrar su ingreso");
-        } else {
-            estad.setText("Pulse para registrar su salida");
-        }
     }
 
     @Override
@@ -209,10 +198,5 @@ public class FragmentRevisionesList extends Fragment {
     public void onResume() {
         super.onResume();
         bandera = true;
-        if (estado.equals("Salida")) {
-            estad.setText("Pulse para registrar su ingreso");
-        } else {
-            estad.setText("Pulse para registrar su salida");
-        }
     }
 }

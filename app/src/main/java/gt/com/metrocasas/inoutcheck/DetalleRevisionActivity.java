@@ -127,7 +127,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
         progreso.setProgress(0);
         info = (TextView)findViewById(R.id.tvUpload2);
         v = findViewById(R.id.detalle);
-        new IngresoElemento(this).execute(user, estado, proyecto, latitud, longitud, fechaRevision);
+        new IngresoElemento(this, v).execute(user, estado, proyecto, latitud, longitud, fechaRevision);
         new GetElementos(this, aAdapterCI, p, q, progreso).execute(proyecto);
     }
 

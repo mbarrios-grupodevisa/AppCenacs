@@ -25,7 +25,7 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
     ElementoAdapter iAdapter;
     LinearLayout p, q;
     ProgressBar progreso;
-    public static String ERROR = "No se encontraron elementos de este proyecto";
+    public static String ERROR = "No debes hacer revisiones aquí";
 
     public GetElementos(Context context, ElementoAdapter iAdapter, LinearLayout p, LinearLayout q, ProgressBar progreso) {
         this.context = context;
@@ -95,7 +95,7 @@ public class GetElementos extends AsyncTask<String, Integer, String> {
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this.context, ERROR, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.context, ERROR, Toast.LENGTH_LONG).show();
         }
         p.setVisibility(View.GONE);
         q.setVisibility(View.VISIBLE);
