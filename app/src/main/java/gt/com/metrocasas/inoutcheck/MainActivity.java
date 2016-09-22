@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
 
     private void requestLocationPermission() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            int hasPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
             if (hasPermission != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_CODE_ASK_PERMISSIONS);
             }

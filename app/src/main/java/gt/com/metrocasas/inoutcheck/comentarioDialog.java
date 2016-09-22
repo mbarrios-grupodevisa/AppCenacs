@@ -1,6 +1,5 @@
 package gt.com.metrocasas.inoutcheck;
 
-import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -95,7 +95,7 @@ public class comentarioDialog extends DialogFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == REQUEST_CODE_ASK_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), "Permiso concedido, presion de nuevo", Toast.LENGTH_SHORT).show();
         } else {
