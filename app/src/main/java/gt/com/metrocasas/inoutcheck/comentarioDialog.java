@@ -96,8 +96,8 @@ public class comentarioDialog extends DialogFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_CODE_ASK_PERMISSIONS && grantResults[0] == 1) {
-            takePicture();
+        if(requestCode == REQUEST_CODE_ASK_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getActivity(), "Permiso concedido, presion de nuevo", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "Se requiere este permiso para continuar", Toast.LENGTH_SHORT).show();
         }
