@@ -13,8 +13,8 @@ android {
         applicationId "gt.com.metrocasas.inoutcheck"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 9
-        versionName "2.4"
+        versionCode 10
+        versionName "2.4.1"
         multiDexEnabled true
     }
     buildTypes {

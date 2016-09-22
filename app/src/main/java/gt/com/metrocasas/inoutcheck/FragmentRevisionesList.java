@@ -82,6 +82,8 @@ public class FragmentRevisionesList extends Fragment {
             } else {
                 solicitarGPS();
             }
+        } else {
+            solicitarGPS();
         }
     }
 

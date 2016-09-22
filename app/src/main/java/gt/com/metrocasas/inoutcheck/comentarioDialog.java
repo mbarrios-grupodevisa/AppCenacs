@@ -91,6 +91,8 @@ public class comentarioDialog extends DialogFragment {
             } else {
                 takePicture();
             }
+        } else {
+            takePicture();
         }
     }
 
