@@ -1,10 +1,13 @@
 package gt.com.metrocasas.inoutcheck;
 
+import android.*;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -16,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import android.widget.Toast;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,29 +34,23 @@ public class comentarioDialog extends DialogFragment {
     private String pictureImagePath = "";
     public final static int RESULT_CAMERA = 1;
     File imgFile = null;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         final View v = inflater.inflate(R.layout.dialog_comentario, null);
-
         comentario = (EditText) v.findViewById(R.id.editText_comentario);
         imagen = (ImageView)v.findViewById(R.id.Foto);
         imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takePicture();
+                requestStoragePermission();
             }
         });
 
-
         builder.setView(v)
-                // Add action buttons
                 .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -82,8 +79,28 @@ public class comentarioDialog extends DialogFragment {
         return builder.create();
     }
 
-        public void setElement(Elemento e){
+    public void setElement(Elemento e){
         this.item = e;
+    }
+
+    public void requestStoragePermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int hasPermission = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] { android.Manifest.permission.READ_EXTERNAL_STORAGE }, REQUEST_CODE_ASK_PERMISSIONS);
+            } else {
+                takePicture();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == REQUEST_CODE_ASK_PERMISSIONS && grantResults[0] == 1) {
+            takePicture();
+        } else {
+            Toast.makeText(getActivity(), "Se requiere este permiso para continuar", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void takePicture() {

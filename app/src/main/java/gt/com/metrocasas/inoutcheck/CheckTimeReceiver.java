@@ -13,6 +13,7 @@ public class CheckTimeReceiver extends BroadcastReceiver {
         SharedPreferences settings = context.getSharedPreferences("User",0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("estado", "Salida");
+        editor.putString("proyecto", "Metrocasas");
         editor.apply();
     }
 }

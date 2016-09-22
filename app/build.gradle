@@ -13,8 +13,8 @@ android {
         applicationId "gt.com.metrocasas.inoutcheck"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 7
-        versionName "2.2.3"
+        versionCode 8
+        versionName "2.3"
         multiDexEnabled true
     }
     buildTypes {
@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            debuggable true
+            debuggable false
         }
     }
 }

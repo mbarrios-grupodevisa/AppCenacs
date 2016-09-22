@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.gesture.GestureOverlayView;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,9 @@ public class LocationProviderReceiver extends BroadcastReceiver {
     public static final String GEOFENCE_VIVENTI_ID = "Viventi";
     public static final String GEOFENCE_CASA_ID = "Casa Asuncion";
     public static final String GEOFENCE_METROCASAS_ID = "Metrocasas";
+    public static final String GEOFENCE_SANISIDRO2021_ID = "San Isidro 2021";
+    public static final String GEOFENCE_MONTEFIORE_ID = "Montefiore";
+    public static final String GEOFENCE_CENTENARIO_ID = "Centenario Tres 18";
     public static GoogleApiClient googleApiClient;
 
     public LocationProviderReceiver() {
@@ -77,25 +81,41 @@ public class LocationProviderReceiver extends BroadcastReceiver {
 
     public static void startGeofenceMonitoring(final Context context) {
         try {
-            Geofence geofence1 = new Geofence.Builder()
+            Geofence geoviventi = new Geofence.Builder()
                     .setRequestId(GEOFENCE_VIVENTI_ID)
-                    .setCircularRegion(14.630865,-90.568863, 100)
+                    .setCircularRegion(14.630865, -90.568863, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(0)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build();
 
-            Geofence geofence2 = new Geofence.Builder()
+            Geofence geocasa = new Geofence.Builder()
                     .setRequestId(GEOFENCE_CASA_ID)
-                    .setCircularRegion(14.626525,-90.497272, 100)
+                    .setCircularRegion(14.626525, -90.497272, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(0)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build();
 
-            Geofence geofence3 = new Geofence.Builder()
+            Geofence geometro = new Geofence.Builder()
                     .setRequestId(GEOFENCE_METROCASAS_ID)
-                    .setCircularRegion(14.605549,-90.516273, 100)
+                    .setCircularRegion(14.605549, -90.516273, 100)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setNotificationResponsiveness(0)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build();
+
+            Geofence geoisidrio2021 = new Geofence.Builder()
+                    .setRequestId(GEOFENCE_SANISIDRO2021_ID)
+                    .setCircularRegion(14.618552, -90.470821, 100)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setNotificationResponsiveness(0)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build();
+
+            Geofence geocentenario = new Geofence.Builder()
+                    .setRequestId(GEOFENCE_CENTENARIO_ID)
+                    .setCircularRegion(14.641453, -90.516437, 100)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setNotificationResponsiveness(0)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
@@ -103,9 +123,11 @@ public class LocationProviderReceiver extends BroadcastReceiver {
 
             GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
                     .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                    .addGeofence(geofence1)
-                    .addGeofence(geofence2)
-                    .addGeofence(geofence3)
+                    .addGeofence(geoviventi)
+                    .addGeofence(geocasa)
+                    .addGeofence(geometro)
+                    .addGeofence(geoisidrio2021)
+                    .addGeofence(geocentenario)
                     .build();
 
             Intent intent = new Intent(context, GeofenceService.class);
@@ -143,6 +165,9 @@ public class LocationProviderReceiver extends BroadcastReceiver {
             ArrayList<String> geofenceids = new ArrayList<>();
             geofenceids.add(GEOFENCE_VIVENTI_ID);
             geofenceids.add(GEOFENCE_CASA_ID);
+            geofenceids.add(GEOFENCE_METROCASAS_ID);
+            geofenceids.add(GEOFENCE_SANISIDRO2021_ID);
+            geofenceids.add(GEOFENCE_CENTENARIO_ID);
             LocationServices.GeofencingApi.removeGeofences(googleApiClient, geofenceids);
             Toast.makeText(context, "Detenida Localización de Proyectos", Toast.LENGTH_LONG).show();
             googleApiClient.disconnect();

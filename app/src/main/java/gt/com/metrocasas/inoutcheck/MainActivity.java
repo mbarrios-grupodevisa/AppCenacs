@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.Manifest;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -17,10 +19,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     public static int FRAGMENT_VIVENTI = 1;
     public static int FRAGMENT_CASA_ASUNCION = 2;
     public static int FRAGMENT_METROCASAS = 3;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     private Toolbar toolbar;
     private String userid, init;
@@ -52,23 +53,27 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        if (settings.getString("proyecto", null).equals("Viventi")) {
+        if (settings.getString("proyecto", "").equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
+        } else if (settings.getString("proyecto", "").equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
         } else{
             setFragment(FRAGMENT_METROCASAS);
         }
         hello();
-        setAutomaticCheckOut();
+        requestLocationPermission();
+        String dato = settings.getString("alarm",null);
+        if(dato!=null) {
+            setAutomaticCheckOut();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (settings.getString("proyecto", null).equals("Viventi")) {
+        if (settings.getString("proyecto", "").equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
+        } else if (settings.getString("proyecto", "").equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
         } else{
             setFragment(FRAGMENT_METROCASAS);
@@ -79,9 +84,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (settings.getString("proyecto", null).equals("Viventi")) {
+        if (settings.getString("proyecto", "").equals("Viventi")) {
             setFragment(FRAGMENT_VIVENTI);
-        } else if (settings.getString("proyecto", null).equals("Casa Asuncion")){
+        } else if (settings.getString("proyecto", "").equals("Casa Asuncion")){
             setFragment(FRAGMENT_CASA_ASUNCION);
         } else{
             setFragment(FRAGMENT_METROCASAS);
@@ -105,6 +110,19 @@ public class MainActivity extends AppCompatActivity
         Intent intentAlarm = new Intent(this, CheckTimeReceiver.class);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, PendingIntent.getBroadcast(this, 0, intentAlarm, 0));
+        SharedPreferences settings = getSharedPreferences("User",0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("alarm","on");
+        editor.apply();
+    }
+
+    private void requestLocationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int hasPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+        }
     }
 
     @Override
@@ -153,6 +171,7 @@ public class MainActivity extends AppCompatActivity
                                 editor.putString("id",null);
                                 editor.putString("firstname",null);
                                 editor.putString("lastname",null);
+                                editor.putString("alarm", null);
                                 editor.apply();
                             finish();
                             }

@@ -115,6 +115,30 @@ public class GeofenceService extends IntentService {
                         .setContentIntent(contentIntent)
                         .build();
                 break;
+            case LocationProviderReceiver.GEOFENCE_SANISIDRO2021_ID:
+                myNotification = new Notification.Builder(getApplicationContext())
+                        .setContentTitle(titulo)
+                        .setContentText("¡Bienvenido!")
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setLights(0xffffffff, 500, 1500)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.sanisidro2021))
+                        .setSmallIcon(R.drawable.sanisidro2021)
+                        .build();
+                break;
+            case LocationProviderReceiver.GEOFENCE_CENTENARIO_ID:
+                myNotification = new Notification.Builder(getApplicationContext())
+                        .setContentTitle(titulo)
+                        .setContentText("¡Bienvenido!")
+                        .setWhen(System.currentTimeMillis())
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setLights(0xffffffff, 500, 1500)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.centenario318))
+                        .setSmallIcon(R.drawable.centenario318)
+                        .build();
+                break;
         }
         notificationManager.notify(MY_NOTIFICATION_ID, myNotification);
     }

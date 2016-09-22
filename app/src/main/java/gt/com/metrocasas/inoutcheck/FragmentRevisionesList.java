@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.Manifest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -34,10 +34,10 @@ public class FragmentRevisionesList extends Fragment {
     String longitudeNetwork, latitudeNetwork, service;
     boolean bandera  = true;
     TextView estad;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         final View partenView = inflater.inflate(R.layout.lista_revisiones, container, false);
         SharedPreferences settings = getActivity().getSharedPreferences("User",0);
         name = settings.getString("firstname", null);
@@ -57,7 +57,7 @@ public class FragmentRevisionesList extends Fragment {
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    solicitarGPS();
+                requestLocationPermission();
             }
         });
 
@@ -71,6 +71,26 @@ public class FragmentRevisionesList extends Fragment {
             estad.setText("Pulse para registrar su ingreso");
         } else {
             estad.setText("Pulse para registrar su salida");
+        }
+    }
+
+    private void requestLocationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int hasPermission = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_CODE_ASK_PERMISSIONS);
+            } else {
+                solicitarGPS();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS && grantResults[0] == 1) {
+            solicitarGPS();
+        } else {
+            Toast.makeText(getActivity(), "Se requiere este permiso para continuar", Toast.LENGTH_SHORT).show();
         }
     }
 
