@@ -31,6 +31,8 @@
         </receiver>
 
         <receiver android:name=".CheckTimeReceiver"/>
+        <receiver android:name=".AlarmIngressReceiver"/>
+        <receiver android:name=".AlarmExitReceiver"/>
 
         <activity
             android:name="gt.com.metrocasas.inoutcheck.MainActivity"

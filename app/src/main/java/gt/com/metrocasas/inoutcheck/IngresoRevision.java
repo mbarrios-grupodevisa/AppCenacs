@@ -45,7 +45,7 @@ public class IngresoRevision extends AsyncTask<String, Integer, String> {
             String fechaRevision = params[2];
             String json = params[3];
 
-            String link = "http://atreveteacrecer.metrocasas.com.gt/insertRevision2.php";
+            String link = "http://monkeepower.com/appsinternas/inoutcheck/insertRevision2.php";
             String data = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(user, "UTF-8")
                     + "&" + URLEncoder.encode("proyecto", "UTF-8") + "=" + URLEncoder.encode(proyecto, "UTF-8")
                     + "&" + URLEncoder.encode("fechaRevision", "UTF-8") + "=" + URLEncoder.encode(fechaRevision, "UTF-8");
@@ -67,7 +67,7 @@ public class IngresoRevision extends AsyncTask<String, Integer, String> {
             JSONArray jsonArray = jsonObject.getJSONArray("revisiones");
             revisionid  = jsonArray.getJSONObject(0).getString("id");
 
-                link = "http://atreveteacrecer.metrocasas.com.gt/insertDetalleRevision2.php";
+                link = "http://monkeepower.com/appsinternas/inoutcheck/insertDetalleRevision2.php";
                 data = URLEncoder.encode("revision_id", "UTF-8") + "=" + URLEncoder.encode(revisionid, "UTF-8")
                         + "&" + URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
 

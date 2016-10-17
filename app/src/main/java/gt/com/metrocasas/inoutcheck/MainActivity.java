@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
@@ -62,9 +64,13 @@ public class MainActivity extends AppCompatActivity
         }
         hello();
         requestLocationPermission();
+        SharedPreferences settings = getSharedPreferences("User",0);
         String dato = settings.getString("alarm",null);
-        if(dato!=null) {
+        if(dato == null) {
+            Toast.makeText(this, "Creando recordatorios...", Toast.LENGTH_SHORT).show();
             setAutomaticCheckOut();
+            setInAlarm();
+            setOutAlarm();
         }
     }
 
@@ -102,14 +108,52 @@ public class MainActivity extends AppCompatActivity
         Snackbar.make(toolbar,"Bienvenido(a) " + name + " " + last, Snackbar.LENGTH_LONG).show();
     }
 
+    public void cancelInAlarm() {
+        Intent intent = new Intent(this, AlarmIngressReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 123, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    public void cancelOutAlarm() {
+        Intent intent = new Intent(this, AlarmExitReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 321, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    public void cancelAutomaticAlarm() {
+
+    }
+
     public void setAutomaticCheckOut() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 21);
         calendar.set(Calendar.MINUTE, 30);
         Intent intentAlarm = new Intent(this, CheckTimeReceiver.class);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, PendingIntent.getBroadcast(this, 0, intentAlarm, 0));
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, PendingIntent.getBroadcast(this.getApplicationContext(), 111, intentAlarm, 0));
+    }
+
+    public void setInAlarm() {
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(System.currentTimeMillis());
+        calendar2.set(Calendar.HOUR_OF_DAY, 10);
+        calendar2.set(Calendar.MINUTE, 30);
+        Intent intentAlarm2 = new Intent(this, AlarmIngressReceiver.class);
+        AlarmManager alarmManager2 = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager2.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, PendingIntent.getBroadcast(this.getApplicationContext(), 123, intentAlarm2, 0));
+    }
+
+    public void setOutAlarm() {
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.setTimeInMillis(System.currentTimeMillis());
+        calendar3.set(Calendar.HOUR_OF_DAY, 19);
+        calendar3.set(Calendar.MINUTE, 0);
+        Intent intentAlarm3 = new Intent(this, AlarmExitReceiver.class);
+        AlarmManager alarmManager3 = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager3.setRepeating(AlarmManager.RTC_WAKEUP, calendar3.getTimeInMillis(), AlarmManager.INTERVAL_DAY, PendingIntent.getBroadcast(this.getApplicationContext(), 321, intentAlarm3, 0));
         SharedPreferences settings = getSharedPreferences("User",0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("alarm","on");
@@ -166,6 +210,9 @@ public class MainActivity extends AppCompatActivity
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                cancelInAlarm();
+                                cancelOutAlarm();
+                                cancelAutomaticAlarm();
                                 SharedPreferences settings = getApplicationContext().getSharedPreferences("User",0);
                                 SharedPreferences.Editor editor = settings.edit();
                                 editor.putString("id",null);

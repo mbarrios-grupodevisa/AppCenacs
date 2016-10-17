@@ -48,7 +48,7 @@ public class DetalleRevisionActivity extends AppCompatActivity {
     TextView info;
     LinearLayout p, q;
     ProgressBar progreso;
-    MenuItem btn ;
+    MenuItem btn;
 
     private static final int VIVENTI = 3;
     private static final int CASA_ASUNCION = 4;
